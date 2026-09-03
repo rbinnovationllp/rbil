@@ -1,6 +1,6 @@
 'use client';
 
-import { type FormEvent, useEffect, useRef, useState } from 'react';
+import { type SyntheticEvent, useEffect, useRef, useState } from 'react';
 import {
   ArrowRight,
   Award,
@@ -21,6 +21,7 @@ import {
   Store,
   UsersRound,
 } from 'lucide-react';
+import InvestorRoom, { InvestorEntrySection } from './investor-room';
 
 type VisitStatus = 'loading' | 'ready' | 'unavailable' | 'unconfigured';
 
@@ -155,6 +156,7 @@ export default function Home() {
   const [visitCount, setVisitCount] = useState<number | null>(null);
   const [visitStatus, setVisitStatus] = useState<VisitStatus>('loading');
   const countedVisitRef = useRef(false);
+  const pathname = typeof window !== 'undefined' ? window.location.pathname : '/';
 
   useEffect(() => {
     if (countedVisitRef.current) {
@@ -165,7 +167,7 @@ export default function Home() {
     const endpoint = getVisitorCounterEndpoint();
 
     if (!endpoint) {
-      setVisitStatus('unconfigured');
+      window.setTimeout(() => setVisitStatus('unconfigured'), 0);
       return;
     }
 
@@ -212,16 +214,20 @@ export default function Home() {
     };
   }, []);
 
-  const handleContactSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleContactSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const data = new FormData(event.currentTarget);
-    const name = String(data.get('name') || '').trim();
-    const organisation = String(data.get('organisation') || '').trim();
-    const country = String(data.get('country') || '').trim();
-    const email = String(data.get('email') || '').trim();
-    const interest = String(data.get('interest') || selectedInterest).trim();
-    const message = String(data.get('message') || '').trim();
+    const formValue = (name: string, fallback = '') => {
+      const value = data.get(name);
+      return typeof value === 'string' ? value.trim() : fallback;
+    };
+    const name = formValue('name');
+    const organisation = formValue('organisation');
+    const country = formValue('country');
+    const email = formValue('email');
+    const interest = formValue('interest', selectedInterest);
+    const message = formValue('message');
     const subject = `RBIL enquiry: ${interest}`;
     const body = [
       `Name: ${name}`,
@@ -235,6 +241,22 @@ export default function Home() {
 
     window.location.href = `mailto:${suggestionEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
+
+  if (pathname.startsWith('/admin')) {
+    return <InvestorRoom initialView="admin" />;
+  }
+
+  if (pathname.startsWith('/investor/login')) {
+    return <InvestorRoom initialView="login" />;
+  }
+
+  if (pathname.startsWith('/investor/apply')) {
+    return <InvestorRoom initialView="request" />;
+  }
+
+  if (pathname.startsWith('/investor')) {
+    return <InvestorRoom initialView="dashboard" />;
+  }
 
   return (
     <main>
@@ -256,6 +278,7 @@ export default function Home() {
           <a href="#research">Research</a>
           <a href="#founder">Founder</a>
           <a href="#partnerships">Partnerships</a>
+          <a href="#investors">Investors</a>
           <a href="#contact">Contact</a>
         </nav>
         <div className="header-actions">
@@ -466,7 +489,7 @@ export default function Home() {
           </p>
         </div>
         <div className="detail-grid">
-          {hackathonProjects.map(({ name, hook, description, url, hackathon, image, imageAlt, accent }) => (
+          {hackathonProjects.map(({ name, hook, description, url, hackathon, accent }) => (
             <article className={`detail-card ${accent}`} key={`detail-${name}`}>
               <a
                 className="video-thumb"
@@ -641,6 +664,8 @@ export default function Home() {
         </div>
       </section>
 
+      <InvestorEntrySection />
+
       <section className="section contact" id="contact">
         <div>
           <p className="eyebrow">Contact</p>
@@ -751,6 +776,7 @@ export default function Home() {
           <a href="#products">Products</a>
           <a href="#research">Research</a>
           <a href="#contact">Contact</a>
+          <a href="#investors">Investor Relations</a>
           <a href="#privacy">Privacy</a>
           <a href="#terms">Terms</a>
           <a href="#accessibility">Accessibility</a>

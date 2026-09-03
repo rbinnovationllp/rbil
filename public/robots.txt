@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /investor
+Disallow: /investor/
+Disallow: /admin
+Disallow: /admin/

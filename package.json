@@ -10,6 +10,7 @@
     "build": "vinext build",
     "build:amplify": "vite build --config vite.amplify.config.ts",
     "start": "wrangler dev --config dist/server/wrangler.json",
+    "test:access": "node scripts/investor-access-tests.mjs",
     "lint": "oxlint",
     "format": "oxfmt"
   },

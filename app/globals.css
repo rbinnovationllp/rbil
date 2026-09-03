@@ -932,6 +932,419 @@ footer p {
   flex: 1;
 }
 
+.investor-entry {
+  background:
+    linear-gradient(135deg, rgb(16 25 37 / 94%), rgb(23 54 93 / 92%)),
+    #101925;
+  color: #fff;
+}
+
+.investor-entry .section-head p,
+.investor-entry .eyebrow {
+  color: #d7e0e9;
+}
+
+.investor-entry .section-head {
+  max-width: 900px;
+}
+
+.investor-entry-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.investor-entry .primary {
+  border-color: #fff;
+  background: #fff;
+  color: var(--navy);
+}
+
+.investor-entry .secondary {
+  border-color: rgb(255 255 255 / 68%);
+  color: #fff;
+}
+
+.investor-room {
+  min-height: 100vh;
+  background: #f5f7f9;
+  color: #152132;
+}
+
+.investor-room h1 {
+  font-size: clamp(2.2rem, 5vw, 4.4rem);
+}
+
+.investor-room h2 {
+  font-size: clamp(1.7rem, 3vw, 2.6rem);
+}
+
+.investor-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 14px clamp(18px, 4vw, 54px);
+  border-bottom: 1px solid rgb(216 224 232 / 80%);
+  background: rgb(255 255 255 / 94%);
+  backdrop-filter: blur(14px);
+}
+
+.investor-topbar nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.investor-topbar button,
+.login-options button,
+.denied-panel button,
+.admin-actions button,
+.logout-button {
+  min-height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0 12px;
+  background: #fff;
+  color: var(--navy);
+  cursor: pointer;
+  font-weight: 850;
+}
+
+.confidential-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 12px clamp(18px, 4vw, 54px);
+  background: #101925;
+  color: #fff;
+  font-size: 0.92rem;
+}
+
+.confidential-banner span {
+  color: #d7e0e9;
+}
+
+.investor-panel,
+.investor-workspace {
+  padding: clamp(34px, 6vw, 76px) clamp(18px, 5vw, 72px);
+}
+
+.application-panel,
+.login-panel {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.55fr) minmax(0, 1fr);
+  gap: clamp(26px, 5vw, 58px);
+  align-items: start;
+}
+
+.security-note,
+.success-message,
+.legal-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 20px;
+  border: 1px solid rgb(216 117 20 / 34%);
+  border-radius: 8px;
+  padding: 16px;
+  background: rgb(216 117 20 / 8%);
+  color: #523103;
+  font-weight: 750;
+  line-height: 1.55;
+}
+
+.investor-form,
+.compact-form {
+  display: grid;
+  gap: 18px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: clamp(18px, 3vw, 28px);
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+fieldset {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+legend {
+  padding: 0 8px;
+  color: var(--navy);
+  font-weight: 900;
+}
+
+.check-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.check-row input {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  margin-top: 2px;
+}
+
+.investor-form button,
+.compact-form button {
+  min-height: 48px;
+  border: 1px solid var(--navy);
+  border-radius: 8px;
+  background: var(--navy);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.login-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 22px;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.login-options button {
+  min-height: 56px;
+  text-align: left;
+}
+
+.denied-panel {
+  max-width: 760px;
+}
+
+.denied-panel svg {
+  color: var(--saffron);
+}
+
+.dashboard-hero,
+.investor-section {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.dashboard-hero {
+  padding: clamp(24px, 4vw, 42px);
+  background:
+    linear-gradient(135deg, rgb(23 54 93 / 96%), rgb(16 25 37 / 94%)),
+    #101925;
+  color: #fff;
+}
+
+.dashboard-hero p {
+  color: #d7e0e9;
+}
+
+.access-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.access-strip span {
+  border: 1px solid rgb(255 255 255 / 22%);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: rgb(255 255 255 / 8%);
+}
+
+.dashboard-cards,
+.project-investor-grid,
+.data-room-grid,
+.stage-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.dashboard-cards article,
+.project-investor-grid article,
+.data-room-grid article,
+.stage-grid span,
+.calculator-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 18px;
+  background: #fff;
+}
+
+.dashboard-cards article {
+  display: grid;
+  gap: 12px;
+  min-height: 124px;
+}
+
+.dashboard-cards svg,
+.project-investor-grid svg,
+.data-room-grid svg,
+.calculator-card svg {
+  color: var(--saffron);
+}
+
+.investor-section {
+  margin-top: 18px;
+  padding: clamp(22px, 4vw, 34px);
+}
+
+.investor-section p,
+.investor-section li {
+  color: #4d5968;
+  line-height: 1.65;
+}
+
+.portfolio-map {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.portfolio-map span,
+.portfolio-map strong {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  background: #f7fafc;
+  font-weight: 900;
+}
+
+.portfolio-map small {
+  display: block;
+  margin-top: 8px;
+  color: var(--subtle);
+  font-weight: 750;
+}
+
+.portfolio-map strong {
+  grid-column: 1 / -1;
+  background: #101925;
+  color: #fff;
+  text-align: center;
+}
+
+.split-investor {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.46fr);
+  gap: 18px;
+}
+
+.valuation-number {
+  color: var(--navy) !important;
+  font-size: clamp(1.7rem, 4vw, 3rem);
+  font-weight: 950;
+  line-height: 1.1;
+}
+
+.calculator-card {
+  display: grid;
+  gap: 12px;
+}
+
+.calculator-card strong {
+  color: var(--green);
+  font-size: 1.3rem;
+}
+
+.responsive-table {
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+table {
+  width: 100%;
+  min-width: 660px;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+th,
+td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+th {
+  background: #eef4f1;
+  color: var(--navy);
+}
+
+.revenue-section {
+  background: #fdfaf3;
+}
+
+.data-room-grid article {
+  display: grid;
+  gap: 10px;
+}
+
+.data-room-grid span {
+  color: var(--subtle);
+  font-size: 0.92rem;
+  font-weight: 800;
+}
+
+.admin-workspace .dashboard-cards article span {
+  color: var(--green);
+  font-size: 1.7rem;
+  font-weight: 950;
+}
+
+.admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.logout-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.investor-disclaimers {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  background: #101925;
+}
+
+.investor-disclaimers p {
+  max-width: 1180px;
+  margin: 0;
+}
+
 form {
   display: grid;
   gap: 14px;
@@ -1048,7 +1461,15 @@ footer small {
   .partner-list,
   .demo-grid,
   .detail-grid,
-  .detail-card {
+  .detail-card,
+  .application-panel,
+  .login-panel,
+  .dashboard-cards,
+  .project-investor-grid,
+  .data-room-grid,
+  .stage-grid,
+  .portfolio-map,
+  .split-investor {
     grid-template-columns: repeat(2, 1fr);
   }
 
@@ -1083,8 +1504,24 @@ footer small {
   .detail-card,
   .founder-profile,
   .founder-card,
+  .application-panel,
+  .login-panel,
+  .form-grid,
+  fieldset,
+  .login-options,
+  .dashboard-cards,
+  .project-investor-grid,
+  .data-room-grid,
+  .stage-grid,
+  .portfolio-map,
+  .split-investor,
   footer {
     grid-template-columns: 1fr;
+  }
+
+  .investor-topbar {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .founder-photo {
