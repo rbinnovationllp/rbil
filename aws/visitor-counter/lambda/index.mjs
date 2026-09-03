@@ -1,0 +1,158 @@
+import crypto from 'node:crypto';
+import {
+  ConditionalCheckFailedException,
+  DynamoDBClient,
+  GetItemCommand,
+  UpdateItemCommand,
+} from '@aws-sdk/client-dynamodb';
+
+const client = new DynamoDBClient({});
+
+const tableName = process.env.TABLE_NAME;
+const counterKey = process.env.COUNTER_KEY || 'rbil-landing-page';
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || '')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+const rateLimitMaxRequests = Number(process.env.RATE_LIMIT_MAX_REQUESTS || '120');
+const rateLimitWindowSeconds = Number(process.env.RATE_LIMIT_WINDOW_SECONDS || '60');
+const rateLimitSalt = process.env.RATE_LIMIT_SALT || 'replace-this-in-production';
+
+const blockedAgentPattern =
+  /(bot|crawler|spider|slurp|bingpreview|facebookexternalhit|whatsapp|telegrambot|linkedinbot|preview|lighthouse|pagespeed|uptime|pingdom|monitor|healthcheck|curl|wget)/i;
+
+const lowerCaseHeaders = (headers = {}) =>
+  Object.fromEntries(Object.entries(headers).map(([key, value]) => [key.toLowerCase(), value || '']));
+
+const isAllowedOrigin = (origin) =>
+  !origin || allowedOrigins.includes('*') || allowedOrigins.includes(origin);
+
+const corsHeaders = (origin) => ({
+  'Access-Control-Allow-Origin': isAllowedOrigin(origin) ? origin || allowedOrigins[0] || '*' : 'null',
+  'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+  'Cache-Control': 'no-store',
+  'Content-Type': 'application/json',
+  Vary: 'Origin',
+});
+
+const response = (statusCode, body, origin) => ({
+  statusCode,
+  headers: corsHeaders(origin),
+  body: JSON.stringify(body),
+});
+
+const getSourceIp = (event) =>
+  event.requestContext?.http?.sourceIp ||
+  event.headers?.['x-forwarded-for']?.split(',')[0]?.trim() ||
+  'unknown';
+
+const readTotalVisits = async () => {
+  const result = await client.send(
+    new GetItemCommand({
+      TableName: tableName,
+      Key: { pk: { S: counterKey } },
+      ProjectionExpression: 'totalVisits',
+      ConsistentRead: true,
+    }),
+  );
+
+  return Number(result.Item?.totalVisits?.N || '0');
+};
+
+const shouldSkipCounting = (headers) => {
+  const userAgent = headers['user-agent'] || '';
+  const purpose = `${headers.purpose || ''} ${headers['sec-purpose'] || ''} ${headers['x-purpose'] || ''}`;
+
+  return blockedAgentPattern.test(userAgent) || /prefetch|prerender|preview/i.test(purpose);
+};
+
+const checkRateLimit = async (event, headers) => {
+  const now = Math.floor(Date.now() / 1000);
+  const windowId = Math.floor(now / rateLimitWindowSeconds);
+  const source = `${getSourceIp(event)}:${headers['user-agent'] || ''}`;
+  const digest = crypto.createHash('sha256').update(`${rateLimitSalt}:${source}`).digest('hex');
+  const pk = `rate#${digest}#${windowId}`;
+
+  try {
+    await client.send(
+      new UpdateItemCommand({
+        TableName: tableName,
+        Key: { pk: { S: pk } },
+        UpdateExpression: 'SET expiresAt = if_not_exists(expiresAt, :expiresAt) ADD hits :one',
+        ConditionExpression: 'attribute_not_exists(hits) OR hits < :limit',
+        ExpressionAttributeValues: {
+          ':expiresAt': { N: String(now + rateLimitWindowSeconds * 2) },
+          ':limit': { N: String(rateLimitMaxRequests) },
+          ':one': { N: '1' },
+        },
+      }),
+    );
+
+    return true;
+  } catch (error) {
+    if (
+      error instanceof ConditionalCheckFailedException ||
+      error?.name === 'ConditionalCheckFailedException'
+    ) {
+      return false;
+    }
+
+    throw error;
+  }
+};
+
+const incrementCounter = async () => {
+  const result = await client.send(
+    new UpdateItemCommand({
+      TableName: tableName,
+      Key: { pk: { S: counterKey } },
+      UpdateExpression: 'SET updatedAt = :updatedAt ADD totalVisits :one',
+      ExpressionAttributeValues: {
+        ':one': { N: '1' },
+        ':updatedAt': { S: new Date().toISOString() },
+      },
+      ReturnValues: 'UPDATED_NEW',
+    }),
+  );
+
+  return Number(result.Attributes?.totalVisits?.N || '0');
+};
+
+export const handler = async (event) => {
+  const headers = lowerCaseHeaders(event.headers);
+  const origin = headers.origin || '';
+  const method = event.requestContext?.http?.method || event.httpMethod || 'GET';
+
+  if (!tableName) {
+    return response(500, { error: 'Counter table is not configured' }, origin);
+  }
+
+  if (method === 'OPTIONS') {
+    return { statusCode: 204, headers: corsHeaders(origin), body: '' };
+  }
+
+  if (!isAllowedOrigin(origin)) {
+    return response(403, { error: 'Origin is not allowed' }, origin);
+  }
+
+  if (method === 'GET') {
+    return response(200, { totalVisits: await readTotalVisits(), counted: false }, origin);
+  }
+
+  if (method !== 'POST') {
+    return response(405, { error: 'Method not allowed' }, origin);
+  }
+
+  if (shouldSkipCounting(headers)) {
+    return response(200, { totalVisits: await readTotalVisits(), counted: false }, origin);
+  }
+
+  const allowed = await checkRateLimit(event, headers);
+
+  if (!allowed) {
+    return response(429, { totalVisits: await readTotalVisits(), counted: false }, origin);
+  }
+
+  return response(200, { totalVisits: await incrementCounter(), counted: true }, origin);
+};

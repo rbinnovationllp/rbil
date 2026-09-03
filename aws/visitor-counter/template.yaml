@@ -1,0 +1,95 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Serverless public visitor counter for the RBIL landing page.
+
+Parameters:
+  AllowedOrigins:
+    Type: String
+    Description: Comma-separated production origins allowed to call the counter API.
+    Default: https://rbil.in,https://www.rbil.in
+  RateLimitMaxRequests:
+    Type: Number
+    Description: Maximum accepted visit increments per source fingerprint per window.
+    Default: 120
+  RateLimitWindowSeconds:
+    Type: Number
+    Description: Rate-limit window in seconds.
+    Default: 60
+  RateLimitSalt:
+    Type: String
+    NoEcho: true
+    Description: Random secret salt used to hash rate-limit fingerprints.
+    MinLength: 16
+
+Globals:
+  Function:
+    Runtime: nodejs22.x
+    MemorySize: 128
+    Timeout: 5
+    Architectures:
+      - arm64
+
+Resources:
+  VisitorCounterTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: pk
+          AttributeType: S
+      KeySchema:
+        - AttributeName: pk
+          KeyType: HASH
+      TimeToLiveSpecification:
+        AttributeName: expiresAt
+        Enabled: true
+
+  VisitorCounterApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      StageName: prod
+
+  VisitorCounterFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambda/
+      Handler: index.handler
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref VisitorCounterTable
+          COUNTER_KEY: rbil-landing-page
+          ALLOWED_ORIGINS: !Ref AllowedOrigins
+          RATE_LIMIT_MAX_REQUESTS: !Ref RateLimitMaxRequests
+          RATE_LIMIT_WINDOW_SECONDS: !Ref RateLimitWindowSeconds
+          RATE_LIMIT_SALT: !Ref RateLimitSalt
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:GetItem
+                - dynamodb:UpdateItem
+              Resource: !GetAtt VisitorCounterTable.Arn
+      Events:
+        GetVisitCount:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref VisitorCounterApi
+            Path: /visit
+            Method: GET
+        RecordVisit:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref VisitorCounterApi
+            Path: /visit
+            Method: POST
+        CounterOptions:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref VisitorCounterApi
+            Path: /visit
+            Method: OPTIONS
+
+Outputs:
+  VisitorCounterEndpoint:
+    Description: Configure this in Amplify as VITE_VISITOR_COUNTER_ENDPOINT.
+    Value: !Sub 'https://${VisitorCounterApi}.execute-api.${AWS::Region}.amazonaws.com/prod/visit'
