@@ -131,6 +131,36 @@ const applicants = [
   ['Priya Sharma', 'India', 'Individual Angel', 'US$25K-US$50K', 'Submitted', 'Level 1 pending', 'New Lead'],
 ];
 
+function InvestorLanguageSwitcher({
+  language,
+  onLanguageChange,
+}: {
+  language: Language;
+  onLanguageChange: (language: Language) => void;
+}) {
+  return (
+    <div className="language-switcher investor-language" aria-label="Website language selector">
+      <Languages size={16} aria-hidden="true" />
+      <button
+        type="button"
+        className={language === 'en' ? 'active' : ''}
+        onClick={() => onLanguageChange('en')}
+        aria-pressed={language === 'en'}
+      >
+        EN
+      </button>
+      <button
+        type="button"
+        className={language === 'hi' ? 'active' : ''}
+        onClick={() => onLanguageChange('hi')}
+        aria-pressed={language === 'hi'}
+      >
+        HI
+      </button>
+    </div>
+  );
+}
+
 function contextFromKey(key: keyof typeof investorProfiles): InvestorAccessContext {
   const profile = investorProfiles[key];
   return {
@@ -446,22 +476,14 @@ export default function InvestorRoom({ initialView, language = 'en' }: { initial
           <button type="button" onClick={() => setView('dashboard')}>{isHindi ? 'Investor room' : 'Investor room'}</button>
           <button type="button" onClick={() => setView('admin')}>{isHindi ? 'Admin' : 'Admin'}</button>
         </nav>
-        <label className="language investor-language" aria-label="Language selector">
-          <Languages size={16} />
-          <select
-            value={activeLanguage}
-            onChange={(event) => {
-              const nextLanguage = event.target.value as Language;
-              setActiveLanguage(nextLanguage);
-              window.localStorage.setItem('rbil-language', nextLanguage);
-              document.documentElement.lang = nextLanguage === 'hi' ? 'hi' : 'en';
-            }}
-            aria-label="Select website language"
-          >
-            <option value="en">EN</option>
-            <option value="hi">हिन्दी</option>
-          </select>
-        </label>
+        <InvestorLanguageSwitcher
+          language={activeLanguage}
+          onLanguageChange={(nextLanguage) => {
+            setActiveLanguage(nextLanguage);
+            window.localStorage.setItem('rbil-language', nextLanguage);
+            document.documentElement.lang = nextLanguage === 'hi' ? 'hi' : 'en';
+          }}
+        />
       </header>
 
       <div className="confidential-banner">

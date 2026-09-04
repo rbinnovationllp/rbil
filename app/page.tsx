@@ -408,6 +408,38 @@ const hiPartnerTitles: Record<string, string> = {
 
 const founderPhone = '+91 81781 13449';
 
+function LanguageSwitcher({
+  language,
+  onLanguageChange,
+  className = '',
+}: {
+  language: Language;
+  onLanguageChange: (language: Language) => void;
+  className?: string;
+}) {
+  return (
+    <div className={`language-switcher ${className}`} aria-label="Website language selector">
+      <Languages size={16} aria-hidden="true" />
+      <button
+        type="button"
+        className={language === 'en' ? 'active' : ''}
+        onClick={() => onLanguageChange('en')}
+        aria-pressed={language === 'en'}
+      >
+        EN
+      </button>
+      <button
+        type="button"
+        className={language === 'hi' ? 'active' : ''}
+        onClick={() => onLanguageChange('hi')}
+        aria-pressed={language === 'hi'}
+      >
+        HI
+      </button>
+    </div>
+  );
+}
+
 const getVisitorCounterEndpoint = () => {
   const viteEnv = (import.meta as ImportMeta & {
     env?: Record<string, string | undefined>;
@@ -606,17 +638,7 @@ export default function Home() {
           <a href="#contact">{isHindi ? 'Contact' : 'Contact'}</a>
         </nav>
         <div className="header-actions">
-          <label className="language" aria-label="Language selector">
-            <Languages size={16} />
-            <select
-              value={language}
-              onChange={(event) => setLanguage(event.target.value as Language)}
-              aria-label="Select website language"
-            >
-              <option value="en">EN</option>
-              <option value="hi">हिन्दी</option>
-            </select>
-          </label>
+          <LanguageSwitcher language={language} onLanguageChange={setLanguage} />
           <a className="header-cta" href="#products">
             {isHindi ? 'Solutions देखें' : 'Explore Solutions'}
           </a>
@@ -1189,17 +1211,11 @@ function ProductDetailPage({
             </a>
           ))}
         </nav>
-        <label className="language product-language" aria-label="Language selector">
-          <Languages size={16} />
-          <select
-            value={language}
-            onChange={(event) => onLanguageChange(event.target.value as Language)}
-            aria-label="Select website language"
-          >
-            <option value="en">EN</option>
-            <option value="hi">हिन्दी</option>
-          </select>
-        </label>
+        <LanguageSwitcher
+          language={language}
+          onLanguageChange={onLanguageChange}
+          className="product-language"
+        />
       </header>
 
       <section className="product-detail-hero">

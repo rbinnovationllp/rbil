@@ -92,6 +92,7 @@ Plot No. 1040/29, Flat No.-201, Gali No.-10, Krishna Colony, Gurugram -122001 Ha
 - Added Investor FAQ wording for possible future conversion/restructuring into a Private Limited Company.
 - Added a public FAQ/unanswered-question style enquiry flow through the RBIL investor FAQ form, routed to `admin@rbil.in`.
 - Added an EN / HI language selector for the public website.
+- Replaced the earlier dropdown-style language control with a visible segmented EN / HI button control so it no longer appears as a placeholder.
 - English remains the default language.
 - Hindi selection is persisted with browser `localStorage` key `rbil-language`.
 - The selected language is preserved across the landing page, product Learn More pages, and public investor request/login surfaces.
@@ -162,7 +163,7 @@ Results:
 Browser smoke test performed locally:
 
 - `http://localhost:3000/` loads in English by default.
-- EN / HI selector switches the public landing page to Hindi.
+- EN / HI segmented buttons switch the public landing page between English and Hindi.
 - Hindi selection persists when opening a product Learn More page.
 - MAMAAI Learn More opened at `/?product=mamaai` and displayed the Hindi product-detail story.
 - Public investor request opened at `/?investor=apply` and preserved Hindi selection.
