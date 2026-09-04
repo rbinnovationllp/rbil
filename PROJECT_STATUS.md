@@ -42,7 +42,7 @@ npm run dev
 - Added the founder profile for Rajesh Kumar Khare.
 - Added Rajesh Kumar Khare's professional photograph.
 - Added Phone/WhatsApp contact: `+91 81781 13449`.
-- Added suggestion email: `rbinnovationllp@gmail.com`.
+- Added official website email: `admin@rbil.in`.
 - Added registered address:
 
 ```text

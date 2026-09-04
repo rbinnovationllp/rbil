@@ -405,6 +405,126 @@ form,
   gap: 18px;
 }
 
+.explore-rbil {
+  padding: 24px clamp(18px, 5vw, 72px) 30px;
+  border-block: 1px solid rgb(216 224 232 / 86%);
+  background: #fff;
+}
+
+.explore-rbil-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 18px;
+}
+
+.explore-rbil-head h2 {
+  margin-bottom: 0;
+  font-size: clamp(1.45rem, 3vw, 2.2rem);
+}
+
+.explore-rbil-head p:last-child {
+  max-width: 500px;
+  margin-bottom: 0;
+  color: #4d5968;
+  font-weight: 750;
+  line-height: 1.5;
+}
+
+.quick-link-rail {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.quick-link-card {
+  display: flex;
+  min-height: 104px;
+  align-items: flex-start;
+  gap: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  background: #f8fbfc;
+  color: var(--ink);
+  text-decoration: none;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease,
+    background-color 160ms ease;
+}
+
+.quick-link-card svg {
+  flex: 0 0 auto;
+  color: var(--saffron);
+}
+
+.quick-link-card span,
+.quick-link-card strong,
+.quick-link-card small {
+  display: block;
+}
+
+.quick-link-card strong {
+  margin-bottom: 5px;
+  color: var(--navy);
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.quick-link-card small {
+  color: #4d5968;
+  font-size: 0.9rem;
+  font-weight: 760;
+  line-height: 1.35;
+}
+
+.quick-link-card em {
+  display: none;
+}
+
+.quick-link-card:hover,
+.quick-link-card:focus-visible {
+  border-color: rgb(216 117 20 / 54%);
+  background: #fff;
+  box-shadow: 0 18px 42px rgb(21 33 50 / 12%);
+  transform: translateY(-2px);
+}
+
+.investor-shortcut {
+  position: relative;
+  border-color: rgb(216 117 20 / 58%);
+  background:
+    linear-gradient(135deg, rgb(23 54 93 / 97%), rgb(16 25 37 / 94%)),
+    #101925;
+}
+
+.investor-shortcut strong,
+.investor-shortcut small {
+  color: #fff;
+}
+
+.investor-shortcut svg {
+  color: #f7b45a;
+}
+
+.investor-shortcut em {
+  display: inline-flex;
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  align-items: center;
+  border-radius: 999px;
+  padding: 6px 10px;
+  background: rgb(255 255 255 / 12%);
+  color: #fff;
+  font-size: 0.76rem;
+  font-style: normal;
+  font-weight: 900;
+}
+
 .principles {
   grid-template-columns: repeat(4, 1fr);
   padding: 26px clamp(18px, 5vw, 72px);
@@ -1345,6 +1465,256 @@ th {
   margin: 0;
 }
 
+.product-detail-page {
+  min-height: 100vh;
+  background: var(--paper);
+}
+
+.product-detail-header {
+  position: sticky;
+  top: 0;
+  z-index: 24;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px clamp(18px, 5vw, 72px);
+  border-bottom: 1px solid rgb(216 224 232 / 80%);
+  background: rgb(255 253 248 / 94%);
+  backdrop-filter: blur(14px);
+}
+
+.product-detail-header nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.back-link,
+.product-detail-header nav a {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0 12px;
+  background: #fff;
+  color: var(--navy);
+  font-weight: 850;
+  text-decoration: none;
+}
+
+.product-detail-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.45fr);
+  align-items: center;
+  gap: clamp(24px, 5vw, 64px);
+  padding: clamp(42px, 8vw, 90px) clamp(18px, 5vw, 72px);
+  background:
+    linear-gradient(135deg, rgb(23 54 93 / 8%), rgb(216 117 20 / 8%)),
+    var(--paper);
+}
+
+.product-detail-hero h1 {
+  font-size: clamp(3rem, 8vw, 6.2rem);
+}
+
+.product-story-card {
+  display: grid;
+  gap: 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 18px;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.product-story-card svg {
+  color: var(--saffron);
+}
+
+.product-story-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: 8px;
+  object-fit: cover;
+  background: #f7f8f9;
+}
+
+.product-story-card strong {
+  color: var(--navy);
+  line-height: 1.4;
+}
+
+.product-story-grid,
+.impact-columns {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  padding: clamp(34px, 6vw, 72px) clamp(18px, 5vw, 72px);
+}
+
+.product-story-grid article,
+.impact-columns article,
+.product-detail-cta {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.product-story-grid article {
+  padding: 20px;
+}
+
+.product-story-grid svg {
+  margin-bottom: 12px;
+  color: var(--saffron);
+}
+
+.product-story-grid h2 {
+  font-size: 1.25rem;
+}
+
+.product-story-grid p,
+.impact-columns p,
+.product-detail-cta p {
+  color: #4d5968;
+  line-height: 1.65;
+}
+
+.india-global-impact {
+  padding: clamp(44px, 7vw, 84px) clamp(18px, 5vw, 72px);
+  background: #fff;
+}
+
+.india-global-impact > div:first-child {
+  max-width: 840px;
+}
+
+.impact-columns {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 20px 0 0;
+}
+
+.impact-columns article {
+  padding: 24px;
+}
+
+.product-detail-cta {
+  margin: clamp(34px, 6vw, 72px) clamp(18px, 5vw, 72px);
+  padding: clamp(24px, 4vw, 42px);
+}
+
+.corporate-disclosure-card,
+.data-room-notice,
+.opportunity-notice {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+  border: 1px solid rgb(216 117 20 / 36%);
+  border-radius: 8px;
+  padding: 16px;
+  background: rgb(216 117 20 / 8%);
+}
+
+.corporate-disclosure-card h3,
+.opportunity-notice h3 {
+  margin-bottom: 2px;
+  color: var(--navy);
+}
+
+.corporate-disclosure-card p,
+.opportunity-notice p,
+.data-room-notice span {
+  margin-bottom: 0;
+  color: #4d5968;
+  line-height: 1.6;
+}
+
+.corporate-disclosure-card a,
+.data-room-notice a,
+.legal-anchor-list a {
+  color: var(--navy);
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.data-room-notice {
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+}
+
+.faq-list {
+  display: grid;
+  gap: 10px;
+}
+
+.faq-question-form {
+  margin-top: 18px;
+}
+
+.optional-label {
+  color: var(--subtle);
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.faq-list details {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.faq-list summary {
+  cursor: pointer;
+  padding: 16px 18px;
+  color: var(--navy);
+  font-weight: 900;
+}
+
+.faq-list details p {
+  margin: 0;
+  padding: 0 18px 18px;
+}
+
+.compact-head {
+  margin-bottom: 18px;
+}
+
+.legal-anchor-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.legal-anchor-list a {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 8px 12px;
+  background: #fff;
+}
+
+.legal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.legal-grid article {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 18px;
+  background: #fff;
+}
+
+.legal-grid h3 {
+  font-size: 1.05rem;
+}
+
 form {
   display: grid;
   gap: 14px;
@@ -1451,8 +1821,16 @@ footer small {
 
   .hero,
   .split,
-  .contact {
+  .contact,
+  .explore-rbil-head,
+  .product-detail-hero {
     grid-template-columns: 1fr;
+  }
+
+  .explore-rbil-head {
+    display: grid;
+    align-items: start;
+    gap: 8px;
   }
 
   .principles,
@@ -1475,6 +1853,34 @@ footer small {
 
   .hero {
     min-height: auto;
+  }
+
+  .quick-link-rail {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 2px 18px 10px;
+    margin-inline: -18px;
+  }
+
+  .quick-link-card {
+    min-width: min(78vw, 320px);
+    scroll-snap-align: start;
+  }
+
+  .investor-shortcut {
+    min-width: min(86vw, 360px);
+  }
+
+  .product-detail-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .product-story-grid,
+  .legal-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -1515,6 +1921,10 @@ footer small {
   .stage-grid,
   .portfolio-map,
   .split-investor,
+  .product-story-grid,
+  .impact-columns,
+  .legal-grid,
+  .data-room-notice,
   footer {
     grid-template-columns: 1fr;
   }
@@ -1530,6 +1940,43 @@ footer small {
 
   .visual-core {
     min-height: 122px;
+  }
+
+  .explore-rbil {
+    padding-top: 18px;
+    padding-bottom: 22px;
+  }
+
+  .explore-rbil-head h2 {
+    font-size: 1.42rem;
+  }
+
+  .explore-rbil-head p:last-child {
+    font-size: 0.96rem;
+  }
+
+  .quick-link-card {
+    min-height: 118px;
+    padding: 15px;
+  }
+
+  .investor-shortcut {
+    padding-bottom: 48px;
+  }
+
+  .product-detail-header nav {
+    width: 100%;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 4px;
+  }
+
+  .product-detail-header nav a {
+    min-width: max-content;
+  }
+
+  .product-detail-hero h1 {
+    font-size: clamp(2.6rem, 16vw, 4.2rem);
   }
 
   h1 {

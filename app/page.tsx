@@ -21,6 +21,7 @@ import {
   Store,
   UsersRound,
 } from 'lucide-react';
+import { buildMailto, rbilOfficialEmail } from '@/lib/contact';
 import InvestorRoom, { InvestorEntrySection } from './investor-room';
 
 type VisitStatus = 'loading' | 'ready' | 'unavailable' | 'unconfigured';
@@ -100,11 +101,153 @@ const products = [
 
 const hackathonProjects = products.filter((product) => product.hackathon);
 
+const productStories = {
+  mamaai: {
+    name: 'MAMAAI',
+    category: 'AI Family Wellness & Food Planning',
+    url: 'https://mamaai.in',
+    image: '/thumbnail-mamaai.png',
+    Icon: HeartPulse,
+    accent: 'rose',
+    intro:
+      'MAMAAI is being developed as an AI-powered family food and household meal-planning platform for the everyday question every home faces: what should we cook today?',
+    sections: [
+      ['The Problem', 'Families often plan meals while balancing age, taste, regional food habits, health needs, allergies, budgets, ingredients already at home and the time available to cook. This daily decision can quietly become stressful and repetitive.'],
+      ['Why We Created It', 'RBIL identified meal planning as a real household pain point where practical AI can reduce decision fatigue and support healthier, more organised food decisions.'],
+      ['Our Solution', 'MAMAAI aims to suggest practical meal ideas based on family size, preferences, cuisine, nutrition considerations, budget and household requirements.'],
+      ['How It Works', 'A family can enter preferences, restrictions, cuisine choices and planning needs. The platform can then help with meal ideas, planning prompts, grocery thinking and future personalised recommendations.'],
+      ['Who Benefits', 'Families, caregivers, working parents, senior citizens, wellness-focused households and anyone responsible for daily food planning can benefit from simpler decisions.'],
+      ['Impact in India', 'India has diverse cuisines, family structures and dietary habits. A locally aware AI meal-planning platform can support regional food choices while helping households plan with budget and nutrition in mind.'],
+      ['Global Potential', 'The same daily food-planning problem exists worldwide. The concept can be adapted for different countries, languages, cultures, allergies, food habits, ingredient availability and wellness preferences.'],
+      ['Future Vision', 'The long-term potential is a trusted family food assistant that supports planning, grocery coordination, wellness guidance and partnerships across food, nutrition and household services.'],
+    ],
+  },
+  easetalk: {
+    name: 'EaseTalk',
+    category: 'AI Accessibility & Assistive Communication',
+    url: 'https://easetalk.in',
+    image: '/thumbnail-easetalk.png',
+    Icon: MessageSquareText,
+    accent: 'teal',
+    intro:
+      'EaseTalk is being developed to support people who face hearing, speech or communication barriers through practical assistive communication tools.',
+    sections: [
+      ['The Problem', 'Many people, including deaf and hard-of-hearing users, people with speech-related needs and senior citizens, face daily communication barriers in homes, public spaces, institutions and services.'],
+      ['Why We Created It', 'RBIL sees accessibility as a human need, not a luxury. EaseTalk is intended to make communication more inclusive, understandable and responsive in ordinary daily situations.'],
+      ['Our Solution', 'The platform brings together assistive communication capabilities such as speech-to-text, text-to-speech, live captions and environmental sound alerts.'],
+      ['How It Works', 'Users may use captions to understand spoken communication, text-to-speech to express messages, and alerts to notice important sounds in their surroundings.'],
+      ['Who Benefits', 'Individuals with hearing or speech challenges, senior citizens, families, schools, healthcare environments, public service providers and accessibility-focused institutions may benefit.'],
+      ['Impact in India', 'India needs affordable assistive tools across languages, communities and income groups. EaseTalk can support inclusion in homes, education, healthcare and public-facing services.'],
+      ['Global Potential', 'Communication barriers exist internationally. The platform concept can be adapted for different languages, accessibility regulations, care environments and institutional workflows.'],
+      ['Future Vision', 'EaseTalk can evolve into a broader accessibility ecosystem serving consumers, institutions, governments and healthcare/community partners.'],
+    ],
+  },
+  'syllabus-synk': {
+    name: 'Syllabus Synk',
+    category: 'AI Education Planning',
+    url: 'https://syllabus-synk.in',
+    image: '/thumbnail-syllabus-synk.png',
+    Icon: GraduationCap,
+    accent: 'blue',
+    intro:
+      'Syllabus Synk is an AI-powered academic planning platform for schools, administrators and teachers who need to turn annual syllabus goals into practical teaching plans.',
+    sections: [
+      ['The Problem', 'Schools often struggle to translate annual syllabus requirements into lesson schedules, classroom pacing, examination planning, reporting and academic coordination across teachers and classes.'],
+      ['Why We Created It', 'RBIL identified academic planning as a repetitive, high-responsibility task where teachers and administrators need clarity, coordination and time savings.'],
+      ['Our Solution', 'Syllabus Synk aims to help schools plan syllabus coverage, lesson schedules, academic calendars, reports and future AI education initiatives.'],
+      ['How It Works', 'The platform can structure syllabus inputs into timelines, lesson plans, coordination views and reporting workflows that support teachers and school leadership.'],
+      ['Who Benefits', 'Teachers, principals, school administrators, private schools, government schools and education departments can benefit from more organised academic planning.'],
+      ['Impact in India', 'With large and diverse school systems, India needs scalable tools that can support Classes 1-12, teacher planning, administrative visibility and AI readiness.'],
+      ['Global Potential', 'Schools worldwide face syllabus planning and coordination challenges. The concept can be adapted for different curricula, languages, academic calendars and education systems.'],
+      ['Future Vision', 'Syllabus Synk can become a school operating layer for academic planning, institutional reporting and future-focused AI learning initiatives.'],
+    ],
+  },
+  'sabsewa-local': {
+    name: 'SabSewa Local',
+    category: 'AI-Enabled Hyperlocal Commerce',
+    url: 'https://sabsewa.in',
+    image: '/thumbnail-sabsewa-local.png',
+    Icon: Store,
+    accent: 'green',
+    intro:
+      'SabSewa Local is being developed to connect nearby consumers with nearby vendors and help neighbourhood businesses participate in the digital economy.',
+    sections: [
+      ['The Problem', 'As commerce becomes more digital, many neighbourhood shopkeepers and small service providers struggle to remain visible, receive local orders and compete with larger online platforms.'],
+      ['Why We Created It', 'RBIL sees local commerce as a community-strengthening opportunity. SabSewa Local is designed around nearby needs, trusted vendors and practical digital access for small businesses.'],
+      ['Our Solution', 'The platform aims to make hyperlocal purchasing convenient for consumers while helping vendors create a digital presence, receive orders and grow within their locality.'],
+      ['How It Works', 'Consumers can discover nearby shops, vendors and services. Vendors can be onboarded, listed and connected to demand from their local area.'],
+      ['Who Benefits', 'Local consumers, shopkeepers, service providers, delivery partners, neighbourhood markets and community commerce networks can benefit.'],
+      ['Impact in India', 'India has a large base of small retailers and local service providers. A hyperlocal platform can help digitise local businesses while preserving neighbourhood commerce.'],
+      ['Global Potential', 'Local-business digitisation is relevant in many countries. The model can be adapted for different cities, languages, payment habits, delivery models and local-commerce ecosystems.'],
+      ['Future Vision', 'SabSewa Local can grow into an AI-assisted hyperlocal commerce network with vendor onboarding, local discovery, order-based monetisation and geographic expansion.'],
+    ],
+  },
+} as const;
+
 const principles = [
   ['Human Problems First', 'We begin with lived challenges.'],
   ['Research Before Development', 'We study needs, barriers, and existing gaps.'],
   ['Accessible by Design', 'We work toward inclusive and affordable solutions.'],
   ['Built for Meaningful Scale', 'We design for communities, institutions, and public systems.'],
+];
+
+const quickLinks = [
+  {
+    title: 'Our Innovations',
+    text: "Explore RBIL's AI solutions",
+    href: '#products',
+    Icon: Sparkles,
+    featured: false,
+  },
+  {
+    title: 'Four Projects, One Vision',
+    text: 'See what we are building',
+    href: '#products',
+    Icon: Store,
+    featured: false,
+  },
+  {
+    title: 'Our Impact',
+    text: 'Technology for real-world problems',
+    href: '#impact',
+    Icon: HeartPulse,
+    featured: false,
+  },
+  {
+    title: 'Partner With Us',
+    text: 'Strategic and institutional collaboration',
+    href: '#partnerships',
+    Icon: HandHeart,
+    featured: false,
+  },
+  {
+    title: 'Investor Relations',
+    text: "Discover the growth opportunity behind RBIL's four AI platforms",
+    href: '#investors',
+    Icon: ShieldCheck,
+    featured: true,
+  },
+  {
+    title: 'Our Journey',
+    text: 'Innovation, hackathons and milestones',
+    href: '#achievements',
+    Icon: Award,
+    featured: false,
+  },
+  {
+    title: 'Founder Story',
+    text: 'The vision behind RBIL',
+    href: '#founder',
+    Icon: UsersRound,
+    featured: false,
+  },
+  {
+    title: 'Connect With RBIL',
+    text: "Let's build together",
+    href: '#contact',
+    Icon: Phone,
+    featured: false,
+  },
 ];
 
 const partners = [
@@ -141,7 +284,6 @@ const partners = [
 ];
 
 const founderPhone = '+91 81781 13449';
-const suggestionEmail = 'rbinnovationllp@gmail.com';
 
 const getVisitorCounterEndpoint = () => {
   const viteEnv = (import.meta as ImportMeta & {
@@ -155,8 +297,11 @@ export default function Home() {
   const [selectedInterest, setSelectedInterest] = useState('Partnership');
   const [visitCount, setVisitCount] = useState<number | null>(null);
   const [visitStatus, setVisitStatus] = useState<VisitStatus>('loading');
+  const [contactSubmitted, setContactSubmitted] = useState(false);
   const countedVisitRef = useRef(false);
   const pathname = typeof window !== 'undefined' ? window.location.pathname : '/';
+  const productParam =
+    typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('product') : null;
 
   useEffect(() => {
     if (countedVisitRef.current) {
@@ -239,7 +384,8 @@ export default function Home() {
       message,
     ].join('\n');
 
-    window.location.href = `mailto:${suggestionEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    setContactSubmitted(true);
+    window.location.href = buildMailto(rbilOfficialEmail, subject, body.split('\n'));
   };
 
   if (pathname.startsWith('/admin')) {
@@ -256,6 +402,14 @@ export default function Home() {
 
   if (pathname.startsWith('/investor')) {
     return <InvestorRoom initialView="dashboard" />;
+  }
+
+  const productSlug = (productParam || pathname.match(/^\/products\/([^/]+)/)?.[1]) as
+    | keyof typeof productStories
+    | undefined;
+
+  if (productSlug && productStories[productSlug]) {
+    return <ProductDetailPage product={productStories[productSlug]} />;
   }
 
   return (
@@ -346,6 +500,28 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="explore-rbil" aria-labelledby="explore-rbil-title">
+        <div className="explore-rbil-head">
+          <div>
+            <p className="eyebrow">Explore RBIL</p>
+            <h2 id="explore-rbil-title">Find the Right Path in Seconds</h2>
+          </div>
+          <p>Who we are, what we are building, why it matters, and how to connect.</p>
+        </div>
+        <div className="quick-link-rail" aria-label="Landing page quick navigation">
+          {quickLinks.map(({ title, text, href, Icon, featured }) => (
+            <a className={`quick-link-card${featured ? ' investor-shortcut' : ''}`} href={href} key={title}>
+              <Icon size={22} aria-hidden="true" />
+              <span>
+                <strong>{title}</strong>
+                <small>{text}</small>
+              </span>
+              {featured ? <em>Explore Investor Opportunities</em> : null}
+            </a>
+          ))}
+        </div>
+      </section>
+
       <section className="principles" aria-label="Trust and purpose principles">
         {principles.map(([title, body]) => (
           <article key={title}>
@@ -405,7 +581,7 @@ export default function Home() {
                 </a>
               ) : null}
               <div className="product-actions">
-                <a href={`#${id}`}>Learn More</a>
+                <a href={`/?product=${id}`}>Learn More</a>
                 <a href={url} target="_blank" rel="noopener noreferrer">
                   Open Product <ExternalLink size={15} />
                 </a>
@@ -568,7 +744,7 @@ export default function Home() {
         </ol>
       </section>
 
-      <section className="section impact">
+      <section className="section impact" id="impact">
         <div className="section-head">
           <p className="eyebrow">Impact areas</p>
           <h2>Built Around Everyday Outcomes</h2>
@@ -675,9 +851,9 @@ export default function Home() {
             layout. Suggestions, partnership enquiries, and product-demo requests can also be sent
             directly by email.
           </p>
-          <a className="email-link" href={`mailto:${suggestionEmail}`}>
+          <a className="email-link" href={`mailto:${rbilOfficialEmail}`}>
             <Mail size={18} aria-hidden="true" />
-            Suggestions: {suggestionEmail}
+            Official email: {rbilOfficialEmail}
           </a>
           <div className="address">
             <MapPin size={22} aria-hidden="true" />
@@ -742,6 +918,13 @@ export default function Home() {
             <span>I consent to being contacted about this enquiry.</span>
           </label>
           <button type="submit">Request a Conversation</button>
+          {contactSubmitted ? (
+            <p className="success-message">
+              <CheckCircle2 size={18} aria-hidden="true" />
+              Thank you for contacting RBIL. Your question has been received by our team. We will
+              respond to the email address provided by you.
+            </p>
+          ) : null}
         </form>
       </section>
 
@@ -765,7 +948,7 @@ export default function Home() {
           <p>Phone/WhatsApp: {founderPhone}</p>
           <p>
             Suggestions:{' '}
-            <a href={`mailto:${suggestionEmail}`}>{suggestionEmail}</a>
+            <a href={`mailto:${rbilOfficialEmail}`}>{rbilOfficialEmail}</a>
           </p>
           <p className="muted">
             Registration details, legal text, and social links should be added after company
@@ -786,6 +969,113 @@ export default function Home() {
           2026.
         </p>
       </footer>
+    </main>
+  );
+}
+
+function ProductDetailPage({
+  product,
+}: {
+  product: (typeof productStories)[keyof typeof productStories];
+}) {
+  const otherProducts = Object.entries(productStories).filter(([, item]) => item.name !== product.name);
+  const Icon = product.Icon;
+
+  return (
+    <main className={`product-detail-page ${product.accent}`}>
+      <header className="product-detail-header">
+        <a className="back-link" href="/">
+          Back to RBIL
+        </a>
+        <nav aria-label="Other RBIL products">
+          {otherProducts.map(([slug, item]) => (
+            <a href={`/?product=${slug}`} key={slug}>
+              {item.name}
+            </a>
+          ))}
+        </nav>
+      </header>
+
+      <section className="product-detail-hero">
+        <div>
+          <p className="eyebrow">{product.category}</p>
+          <h1>{product.name}</h1>
+          <p className="lead">{product.intro}</p>
+          <div className="actions">
+            <a className="button primary" href={product.url} target="_blank" rel="noopener noreferrer">
+              Visit Product <ExternalLink size={18} />
+            </a>
+            <a className="button secondary" href="#features">
+              Explore Features
+            </a>
+            <a className="button secondary" href="/#partnerships">
+              Partner With Us
+            </a>
+            <a className="button secondary" href="/#investors">
+              Investor Relations
+            </a>
+          </div>
+        </div>
+        <div className="product-story-card">
+          <Icon size={40} aria-hidden="true" />
+          <img src={product.image} alt={`${product.name} product preview`} />
+          <strong>The Problem - Why We Created It - Our Solution - Future Vision</strong>
+        </div>
+      </section>
+
+      <section className="product-story-grid" id="features">
+        {product.sections.map(([title, text]) => (
+          <article key={title}>
+            <Icon size={24} aria-hidden="true" />
+            <h2>{title}</h2>
+            <p>{text}</p>
+          </article>
+        ))}
+      </section>
+
+      <section className="india-global-impact">
+        <div>
+          <p className="eyebrow">Built in India. Designed for Wider Impact.</p>
+          <h2>{product.name} Starts With a Real Human Need</h2>
+        </div>
+        <div className="impact-columns">
+          <article>
+            <h3>India Relevance</h3>
+            <p>
+              RBIL is building from Indian realities: diverse languages, family structures,
+              education systems, accessibility needs, local businesses, budgets and everyday
+              adoption challenges.
+            </p>
+          </article>
+          <article>
+            <h3>Wider Adaptability</h3>
+            <p>
+              The underlying problem can also exist internationally. The platform may be adapted for
+              different countries, languages, cultures, education systems, food habits,
+              accessibility requirements and local-commerce ecosystems.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section className="product-detail-cta">
+        <h2>Turn Curiosity Into a Conversation</h2>
+        <p>
+          RBIL welcomes thoughtful conversations with users, schools, public-sector teams,
+          institutions, local-business partners, strategic collaborators and screened investors.
+        </p>
+        <div className="actions">
+          <a className="button primary" href={product.url} target="_blank" rel="noopener noreferrer">
+            Visit Product <ExternalLink size={18} />
+          </a>
+          <a className="button secondary" href="/#contact">
+            Connect With RBIL
+          </a>
+          <a className="button secondary" href="/#investors">
+            Investor Relations
+          </a>
+        </div>
+      </section>
     </main>
   );
 }

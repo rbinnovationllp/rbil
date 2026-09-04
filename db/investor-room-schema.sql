@@ -112,6 +112,16 @@ CREATE TABLE investor_opportunities (
   created_by TEXT
 );
 
+CREATE TABLE investor_opportunity_acknowledgements (
+  id TEXT PRIMARY KEY,
+  investor_id TEXT NOT NULL REFERENCES investor_profiles(id),
+  opportunity_id TEXT NOT NULL REFERENCES investor_opportunities(id),
+  disclosure_version TEXT NOT NULL,
+  acknowledged INTEGER NOT NULL DEFAULT 0,
+  acknowledged_at TEXT,
+  created_at TEXT NOT NULL
+);
+
 CREATE TABLE investor_questions (
   id TEXT PRIMARY KEY,
   investor_id TEXT NOT NULL REFERENCES investor_profiles(id),
@@ -193,10 +203,31 @@ CREATE TABLE fund_use_categories (
   updated_by TEXT
 );
 
+CREATE TABLE website_enquiries (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  mobile TEXT,
+  organisation TEXT,
+  category TEXT NOT NULL,
+  message TEXT NOT NULL,
+  source_page TEXT,
+  routed_to_email TEXT NOT NULL DEFAULT 'admin@rbil.in',
+  delivery_status TEXT NOT NULL DEFAULT 'pending',
+  user_agent TEXT,
+  ip_address TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+
 CREATE INDEX idx_investor_profiles_status ON investor_profiles(status);
 CREATE INDEX idx_investor_profiles_access_level ON investor_profiles(access_level);
 CREATE INDEX idx_investor_documents_level ON investor_documents(minimum_access_level);
 CREATE INDEX idx_investor_audit_logs_investor_created ON investor_audit_logs(investor_id, created_at);
 CREATE INDEX idx_investor_pipeline_stage ON investor_pipeline(stage);
+CREATE INDEX idx_investor_opportunity_acknowledgements_investor
+ON investor_opportunity_acknowledgements(investor_id, opportunity_id);
+CREATE INDEX idx_website_enquiries_created ON website_enquiries(created_at);
+CREATE INDEX idx_website_enquiries_category ON website_enquiries(category);
 
 PRAGMA optimize;

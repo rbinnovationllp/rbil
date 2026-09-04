@@ -28,6 +28,7 @@ import {
   indicativePostMoneyPercentage,
   type InvestorAccessContext,
 } from '@/lib/investor-access';
+import { buildMailto, rbilOfficialEmail } from '@/lib/contact';
 
 type ViewMode = 'request' | 'login' | 'dashboard' | 'admin';
 
@@ -40,6 +41,36 @@ const llpDisclaimer =
 const conversionDisclosure =
   "RBIL is presently a Limited Liability Partnership. Management presently intends, following achievement of its fundraising objectives and subject to applicable law, professional advice, investor agreements and regulatory requirements, to transition RBIL into an appropriate Private Limited Company structure. Subject to definitive documentation and applicable law, investor economic interests existing immediately prior to such restructuring are intended to be appropriately reflected in the capital/shareholding structure of the resulting company.";
 
+const compactConversionDisclosure =
+  'Rashi Bhartiya Innovation LLP is presently constituted as a Limited Liability Partnership. Management presently intends, following achievement of appropriate fundraising and growth objectives and subject to applicable law, investor agreements, professional advice and required approvals, to consider conversion/restructuring of RBIL into a Private Limited Company suitable for its next stage of growth.';
+
+const participationDisclosure =
+  "Subject to definitive documentation and applicable legal and regulatory requirements, existing investor economic participation is intended to be appropriately reflected in the capital/shareholding structure of the resulting company.";
+
+const investorFaqs = [
+  [
+    'What happens to my investment if RBIL subsequently becomes a Private Limited Company?',
+    "RBIL presently operates as a Limited Liability Partnership. Management intends, subject to fundraising progress, commercial requirements, applicable law, professional advice and required approvals, to consider conversion/restructuring into a Private Limited Company. Definitive investment documentation will specify the treatment of each investor's economic participation. Subject to applicable law, agreed valuation and approvals, the intention is to appropriately reflect the investor's agreed participation in the capital/shareholding structure of the resulting company.",
+  ],
+  [
+    'Will my current investment percentage automatically become the same percentage of shares after conversion?',
+    'No automatic or unconditional share percentage should be assumed. The final shareholding or securities entitlement will depend upon the definitive investment agreements, valuation, capital structure, any subsequent fundraising or dilution, applicable law and regulatory requirements.',
+  ],
+  [
+    'Is the US$12 million valuation independently certified?',
+    'No. The US$12 million figure currently shown in the Investor Room represents a founder/management proposed pre-money valuation for investment discussion purposes. Final valuation remains subject to due diligence, negotiation and any professional valuation requirements applicable to the transaction.',
+  ],
+  [
+    'Is the Rs. 4,000 crore annual revenue figure current revenue?',
+    "No. It represents management's long-term full-scale revenue opportunity/projection across the RBIL portfolio. It is not current revenue, booked revenue or guaranteed future revenue.",
+  ],
+  [
+    'Does access to the Investor Room constitute an investment offer?',
+    'No. The Investor Room is provided for confidential evaluation and discussion purposes. Any investment will proceed only through appropriate due diligence, negotiation, definitive agreements and applicable legal and regulatory processes.',
+  ],
+] as const;
+
+// Future Investment Memorandum must include current legal structure and proposed corporate restructuring disclosure.
 const investorProfiles = {
   none: { name: 'Public visitor', role: 'anonymous', status: 'submitted', level: 0 },
   level1: { name: 'Investor A', role: 'approved_investor', status: 'active', level: 1 },
@@ -136,6 +167,199 @@ export function InvestorEntrySection() {
   );
 }
 
+function CorporateStructureDisclosure({ compact = false }: { compact?: boolean }) {
+  return (
+    <div className="corporate-disclosure-card">
+      <h3>{compact ? 'Current & Proposed Corporate Structure' : 'Proposed Future Corporate Structure'}</h3>
+      {compact ? (
+        <>
+          <p>{compactConversionDisclosure}</p>
+          <p>{participationDisclosure}</p>
+          <a href="#legal-disclosures">Read Corporate Structure & Legal Disclosures</a>
+        </>
+      ) : (
+        <>
+          <p>{conversionDisclosure}</p>
+          <p>
+            The parties intend that the investor's agreed economic participation will be
+            appropriately reflected in the resulting corporate structure, subject to definitive
+            agreements, valuation, applicable law and regulatory requirements.
+          </p>
+        </>
+      )}
+    </div>
+  );
+}
+
+function InvestorFAQ() {
+  const [questionSubmitted, setQuestionSubmitted] = useState(false);
+  const handleQuestionSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const formValue = (name: string) => {
+      const value = data.get(name);
+      return typeof value === 'string' ? value.trim() : '';
+    };
+    const name = formValue('name');
+    const email = formValue('email');
+    const mobile = formValue('mobile');
+    const organisation = formValue('organisation');
+    const category = formValue('category');
+    const message = formValue('message');
+
+    window.location.href = buildMailto(rbilOfficialEmail, `RBIL investor FAQ question: ${category}`, [
+      'New RBIL Investor Room FAQ question',
+      '',
+      `Name: ${name}`,
+      `Email: ${email}`,
+      `Mobile: ${mobile || 'Not provided'}`,
+      `Organisation: ${organisation || 'Not provided'}`,
+      `Subject/category: ${category}`,
+      '',
+      message,
+    ]);
+    setQuestionSubmitted(true);
+    event.currentTarget.reset();
+  };
+
+  return (
+    <section className="investor-section" id="investor-faq">
+      <h2>Investor FAQ</h2>
+      <div className="faq-list">
+        {investorFaqs.map(([question, answer], index) => (
+          <details key={question} open={index === 0}>
+            <summary>{question}</summary>
+            <p>{answer}</p>
+          </details>
+        ))}
+      </div>
+      <form className="faq-question-form" onSubmit={handleQuestionSubmit}>
+        <h3>Still have a question? Ask RBIL</h3>
+        <div className="form-grid">
+          <label>Name<input name="name" required /></label>
+          <label>Email<input type="email" name="email" required /></label>
+          <label>Mobile number <span className="optional-label">optional</span><input name="mobile" /></label>
+          <label>Organisation <span className="optional-label">optional</span><input name="organisation" /></label>
+          <label>
+            Subject/category
+            <select name="category" required>
+              <option>Investment discussion</option>
+              <option>Corporate structure</option>
+              <option>Valuation</option>
+              <option>Revenue projection</option>
+              <option>Data room</option>
+              <option>Partnership</option>
+              <option>Other</option>
+            </select>
+          </label>
+        </div>
+        <label>Question/message<textarea name="message" rows={4} required /></label>
+        <button type="submit">Ask RBIL</button>
+        {questionSubmitted ? (
+          <p className="success-message">
+            Thank you for contacting RBIL. Your question has been received by our team. We will
+            respond to the email address provided by you.
+          </p>
+        ) : null}
+      </form>
+    </section>
+  );
+}
+
+function LegalRegulatoryDisclosures() {
+  return (
+    <section className="investor-section legal-disclosures" id="legal-disclosures">
+      <div className="section-head compact-head">
+        <p className="eyebrow">Investor Room disclosures</p>
+        <h2>Legal & Regulatory Disclosures</h2>
+      </div>
+      <div className="legal-anchor-list" aria-label="Legal disclosure shortcuts">
+        <a href="#legal-structure">Corporate Structure</a>
+        <a href="#legal-valuation">Valuation</a>
+        <a href="#legal-projections">Financial Projections</a>
+        <a href="#legal-foreign">Foreign Investors</a>
+        <a href="#legal-no-offer">No Offer Disclaimer</a>
+      </div>
+      <div className="legal-grid">
+        <article id="legal-structure">
+          <h3>A. Current Legal Structure</h3>
+          <p>Rashi Bhartiya Innovation LLP is presently organised as a Limited Liability Partnership.</p>
+        </article>
+        <article>
+          <h3>B. Proposed Future Corporate Structure</h3>
+          <p>{conversionDisclosure}</p>
+        </article>
+        <article>
+          <h3>C. Investor Participation</h3>
+          <p>
+            Any investment percentage, economic participation, ownership indication or financial
+            calculation shown within the Investor Room is indicative unless and until incorporated
+            into legally executed definitive agreements.
+          </p>
+        </article>
+        <article id="legal-valuation">
+          <h3>D. Valuation</h3>
+          <p>
+            Any valuation displayed in the Investor Room represents management's proposed/indicative
+            valuation unless explicitly identified otherwise and should not be interpreted as an
+            independent certified valuation.
+          </p>
+        </article>
+        <article id="legal-projections">
+          <h3>E. Financial Projections</h3>
+          <p>
+            Financial projections, market estimates, user-growth scenarios and long-term revenue
+            opportunities are forward-looking management assumptions and are subject to substantial
+            business, execution, market, competitive and regulatory risks.
+          </p>
+        </article>
+        <article id="legal-foreign">
+          <h3>F. Foreign Investors</h3>
+          <p>
+            Investments involving non-resident or foreign investors will be structured only after
+            confirming the applicable requirements under Indian foreign-investment, FEMA, FDI, tax
+            and other relevant regulations.
+          </p>
+        </article>
+        <article id="legal-no-offer">
+          <h3>G. No Offer / No Guarantee</h3>
+          <p>
+            Nothing within the RBIL Investor Room constitutes a public offer, solicitation,
+            guarantee of return, assurance of profit or legally binding investment commitment.
+          </p>
+        </article>
+      </div>
+    </section>
+  );
+}
+
+function InvestorSpecificOpportunityNotice() {
+  return (
+    <section className="investor-section" id="term-discussion">
+      <h2>Investor-Specific Opportunity / Term Discussion</h2>
+      <div className="opportunity-notice">
+        <h3>Corporate Structure Notice</h3>
+        <p>
+          RBIL is presently a Limited Liability Partnership. Any future corporate restructuring,
+          including a possible transition to a Private Limited Company, and the treatment of the
+          investor's economic participation will be governed by definitive agreements, applicable
+          law, valuation, required approvals and professional advice.
+        </p>
+        <label className="check-row">
+          <input type="checkbox" />
+          I acknowledge that the proposed investment terms are indicative and that any future
+          shareholding/securities entitlement will be determined through definitive legal
+          documentation.
+        </label>
+        <p className="muted">
+          Production storage: investor ID, opportunity ID, disclosure version, timestamp and
+          acknowledgement status. This acknowledgement does not create or alter legal entitlement.
+        </p>
+      </div>
+    </section>
+  );
+}
+
 export default function InvestorRoom({ initialView }: { initialView?: ViewMode }) {
   const [view, setView] = useState<ViewMode>(initialView || 'request');
   const [profileKey, setProfileKey] = useState<keyof typeof investorProfiles>('none');
@@ -152,7 +376,39 @@ export default function InvestorRoom({ initialView }: { initialView?: ViewMode }
 
   const handleSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const formValue = (name: string) => {
+      const value = data.get(name);
+      return typeof value === 'string' ? value.trim() : '';
+    };
+    const areas = data
+      .getAll('areas')
+      .filter((value): value is string => typeof value === 'string')
+      .join(', ');
+
     setSubmitted(true);
+    window.location.href = buildMailto(rbilOfficialEmail, 'New RBIL investor access request', [
+      'New RBIL investor access request',
+      '',
+      `Full name: ${formValue('fullName')}`,
+      `Email: ${formValue('email')}`,
+      `Mobile: ${formValue('mobile')}`,
+      `Country: ${formValue('country')}`,
+      `City: ${formValue('city')}`,
+      `LinkedIn: ${formValue('linkedin') || 'Not provided'}`,
+      `Organisation: ${formValue('organisation') || 'Not provided'}`,
+      `Designation: ${formValue('designation') || 'Not provided'}`,
+      `Investor type: ${formValue('investorType')}`,
+      `Indicative capacity: ${formValue('capacity')}`,
+      `Areas of interest: ${areas || 'Not provided'}`,
+      `Previous startup investments: ${formValue('experience')}`,
+      `Typical ticket size: ${formValue('ticketSize') || 'Not provided'}`,
+      `Previously invested sectors: ${formValue('sectors') || 'Not provided'}`,
+      `Countries where investor invests: ${formValue('countries') || 'Not provided'}`,
+      `Investment mode: ${formValue('mode')}`,
+      '',
+      formValue('message'),
+    ]);
   };
 
   const login = (nextProfile: keyof typeof investorProfiles) => {
@@ -258,7 +514,7 @@ export default function InvestorRoom({ initialView }: { initialView?: ViewMode }
             <label className="check-row"><input type="checkbox" required />I understand that access to RBIL's private investor materials may contain confidential, proprietary and commercially sensitive information. I agree not to copy, reproduce, distribute, disclose or commercially use such information without prior written permission from Rashi Bhartiya Innovation LLP.</label>
             <label className="check-row"><input type="checkbox" required />I understand that submission of this request does not guarantee access to the Investor Room and does not constitute an offer of securities, partnership interest or investment.</label>
             <button type="submit">Submit Access Request</button>
-            {submitted ? <p className="success-message"><CheckCircle2 size={18} />Request captured for admin review. In production this record should store timestamp, consent version, investor ID, user agent and legally appropriate IP metadata.</p> : null}
+            {submitted ? <p className="success-message"><CheckCircle2 size={18} />Thank you for contacting RBIL. Your question has been received by our team. We will respond to the email address provided by you.</p> : null}
           </form>
         </section>
       ) : null}
@@ -411,6 +667,7 @@ function InvestorDashboard({
             Management / Founder Proposed Pre-Money Valuation, subject to due diligence,
             negotiation and applicable professional valuation requirements.
           </p>
+          <CorporateStructureDisclosure compact />
           <p className="legal-note">
             Any percentage, ownership, economic interest or investment amount displayed in this
             portal is indicative only and does not constitute a legally binding offer.
@@ -458,6 +715,15 @@ function InvestorDashboard({
 
       <section className="investor-section">
         <h2>Confidential Data Room</h2>
+        <div className="data-room-notice">
+          <strong>Corporate Structure Notice:</strong>
+          <span>
+            RBIL presently operates as a Limited Liability Partnership and may, subject to applicable
+            law and future business requirements, consider restructuring into a Private Limited
+            Company.
+          </span>
+          <a href="#legal-disclosures">View Full Legal & Regulatory Disclosures</a>
+        </div>
         <div className="data-room-grid">
           {['Corporate Documents', 'Financial Information', 'Business Plans', 'Product Documentation', 'Market Research', 'Legal / Compliance', 'Intellectual Property', 'Demonstration Videos', 'Founder / Management Documents', 'Investment Documents'].map((item, index) => (
             <article key={item}>
@@ -475,14 +741,9 @@ function InvestorDashboard({
       </section>
 
       <section className="investor-section split-investor">
-        <div>
+        <div id="corporate-structure">
           <h2>Corporate Structure & Future Roadmap</h2>
-          <p>{conversionDisclosure}</p>
-          <p>
-            The parties intend that the investor's agreed economic participation will be
-            appropriately reflected in the resulting corporate structure, subject to definitive
-            agreements, valuation, applicable law and regulatory requirements.
-          </p>
+          <CorporateStructureDisclosure />
         </div>
         <form className="compact-form">
           <h3>Request Founder Discussion</h3>
@@ -493,6 +754,9 @@ function InvestorDashboard({
           <button type="button">Submit Request</button>
         </form>
       </section>
+      <InvestorFAQ />
+      <LegalRegulatoryDisclosures />
+      <InvestorSpecificOpportunityNotice />
     </section>
   );
 }
