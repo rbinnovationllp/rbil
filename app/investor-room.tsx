@@ -14,6 +14,7 @@ import {
   GanttChartSquare,
   GraduationCap,
   HeartPulse,
+  Languages,
   LockKeyhole,
   LogOut,
   Mail,
@@ -31,6 +32,7 @@ import {
 import { buildMailto, rbilOfficialEmail } from '@/lib/contact';
 
 type ViewMode = 'request' | 'login' | 'dashboard' | 'admin';
+type Language = 'en' | 'hi';
 
 const disclaimer =
   'The information provided within the RBIL Private Investor Room is for discussion and evaluation purposes only. Nothing contained herein constitutes an offer, solicitation, guarantee of return or legally binding commitment. Financial projections, market estimates, valuation indications and business forecasts involve assumptions and risks and actual results may differ materially. Prospective investors should conduct independent due diligence and obtain professional legal, tax, financial and regulatory advice before making any investment decision.';
@@ -138,29 +140,31 @@ function contextFromKey(key: keyof typeof investorProfiles): InvestorAccessConte
   } as InvestorAccessContext;
 }
 
-export function InvestorEntrySection() {
+export function InvestorEntrySection({ language = 'en' }: { language?: Language }) {
+  const isHindi = language === 'hi';
+
   return (
     <section className="section investor-entry" id="investors">
       <div className="section-head">
-        <p className="eyebrow">Investor relations</p>
-        <h2>Strategic Investment Opportunities</h2>
+        <p className="eyebrow">{isHindi ? 'Investor Relations' : 'Investor relations'}</p>
+        <h2>{isHindi ? 'Strategic Investment Opportunities' : 'Strategic Investment Opportunities'}</h2>
         <p>
-          Rashi Bhartiya Innovation LLP is building AI-powered digital solutions addressing
-          everyday challenges in family wellness, education, accessibility and hyperlocal commerce.
-          RBIL periodically engages with qualified strategic, institutional and financial investors.
+          {isHindi
+            ? 'Rashi Bhartiya Innovation LLP family wellness, education, accessibility और hyperlocal commerce की everyday challenges के लिए AI-powered digital solutions बना रहा है. RBIL समय-समय पर qualified strategic, institutional और financial investors से बातचीत करता है.'
+            : 'Rashi Bhartiya Innovation LLP is building AI-powered digital solutions addressing everyday challenges in family wellness, education, accessibility and hyperlocal commerce. RBIL periodically engages with qualified strategic, institutional and financial investors.'}
         </p>
         <p>
-          Detailed information relating to our projects, business models, growth plans and
-          investment opportunities is confidential and available only to approved prospective
-          investors.
+          {isHindi
+            ? 'Projects, business models, growth plans और investment opportunities से जुड़ी detailed information confidential है और केवल approved prospective investors के लिए उपलब्ध है.'
+            : 'Detailed information relating to our projects, business models, growth plans and investment opportunities is confidential and available only to approved prospective investors.'}
         </p>
       </div>
       <div className="investor-entry-actions">
-        <a className="button primary" href="/investor/apply">
-          Request Investor Access
+        <a className="button primary" href="/?investor=apply">
+          {isHindi ? 'Investor Access Request करें' : 'Request Investor Access'}
         </a>
-        <a className="button secondary" href="/investor/login">
-          Existing Investor Login
+        <a className="button secondary" href="/?investor=login">
+          {isHindi ? 'Existing Investor Login' : 'Existing Investor Login'}
         </a>
       </div>
     </section>
@@ -360,12 +364,21 @@ function InvestorSpecificOpportunityNotice() {
   );
 }
 
-export default function InvestorRoom({ initialView }: { initialView?: ViewMode }) {
+export default function InvestorRoom({ initialView, language = 'en' }: { initialView?: ViewMode; language?: Language }) {
   const [view, setView] = useState<ViewMode>(initialView || 'request');
+  const [activeLanguage, setActiveLanguage] = useState<Language>(() => {
+    if (typeof window === 'undefined') {
+      return language;
+    }
+
+    const savedLanguage = window.localStorage.getItem('rbil-language');
+    return savedLanguage === 'hi' || savedLanguage === 'en' ? savedLanguage : language;
+  });
   const [profileKey, setProfileKey] = useState<keyof typeof investorProfiles>('none');
   const [submitted, setSubmitted] = useState(false);
   const [investment, setInvestment] = useState(500000);
   const context = contextFromKey(profileKey);
+  const isHindi = activeLanguage === 'hi';
   const roomAllowed = canAccessInvestorRoom(context);
   const adminAllowed = canAccessAdmin(context);
   const selectedProfile = investorProfiles[profileKey];
@@ -424,15 +437,31 @@ export default function InvestorRoom({ initialView }: { initialView?: ViewMode }
           <img className="brand-logo" src="/rashi-bhartiya-logo.png" alt="RBIL logo" />
           <span>
             <strong>RBIL</strong>
-            <small>Private Investor Room</small>
+            <small>{isHindi ? 'Private Investor Room' : 'Private Investor Room'}</small>
           </span>
         </a>
         <nav aria-label="Investor navigation">
-          <button type="button" onClick={() => setView('request')}>Request access</button>
-          <button type="button" onClick={() => setView('login')}>Login</button>
-          <button type="button" onClick={() => setView('dashboard')}>Investor room</button>
-          <button type="button" onClick={() => setView('admin')}>Admin</button>
+          <button type="button" onClick={() => setView('request')}>{isHindi ? 'Access request' : 'Request access'}</button>
+          <button type="button" onClick={() => setView('login')}>{isHindi ? 'Login' : 'Login'}</button>
+          <button type="button" onClick={() => setView('dashboard')}>{isHindi ? 'Investor room' : 'Investor room'}</button>
+          <button type="button" onClick={() => setView('admin')}>{isHindi ? 'Admin' : 'Admin'}</button>
         </nav>
+        <label className="language investor-language" aria-label="Language selector">
+          <Languages size={16} />
+          <select
+            value={activeLanguage}
+            onChange={(event) => {
+              const nextLanguage = event.target.value as Language;
+              setActiveLanguage(nextLanguage);
+              window.localStorage.setItem('rbil-language', nextLanguage);
+              document.documentElement.lang = nextLanguage === 'hi' ? 'hi' : 'en';
+            }}
+            aria-label="Select website language"
+          >
+            <option value="en">EN</option>
+            <option value="hi">हिन्दी</option>
+          </select>
+        </label>
       </header>
 
       <div className="confidential-banner">
@@ -448,29 +477,30 @@ export default function InvestorRoom({ initialView }: { initialView?: ViewMode }
       {view === 'request' ? (
         <section className="investor-panel application-panel">
           <div>
-            <p className="eyebrow">Private access request</p>
-            <h1>Building AI Solutions for Real-World Problems</h1>
-            <p className="lead">Four platforms. Four major markets. One innovation company.</p>
+            <p className="eyebrow">{isHindi ? 'Private access request' : 'Private access request'}</p>
+            <h1>{isHindi ? 'Real-world problems के लिए AI solutions' : 'Building AI Solutions for Real-World Problems'}</h1>
+            <p className="lead">{isHindi ? 'चार platforms. चार बड़े markets. एक innovation company.' : 'Four platforms. Four major markets. One innovation company.'}</p>
             <div className="security-note">
               <LockKeyhole size={20} aria-hidden="true" />
               <span>
-                Access is not automatic. Every applicant is manually screened before the private
-                investor room is opened.
+                {isHindi
+                  ? 'Access automatic नहीं है. Private Investor Room खोलने से पहले हर applicant manually screened होता है.'
+                  : 'Access is not automatic. Every applicant is manually screened before the private investor room is opened.'}
               </span>
             </div>
           </div>
           <form className="investor-form" onSubmit={handleSubmit}>
             <div className="form-grid">
-              <label>Full name<input name="fullName" required /></label>
-              <label>Email address<input type="email" name="email" required /></label>
-              <label>Mobile number<input name="mobile" required /></label>
-              <label>Country<input name="country" required /></label>
-              <label>City<input name="city" required /></label>
-              <label>LinkedIn profile<input type="url" name="linkedin" /></label>
-              <label>Company / organisation<input name="organisation" /></label>
-              <label>Designation<input name="designation" /></label>
+              <label>{isHindi ? 'पूरा नाम' : 'Full name'}<input name="fullName" required /></label>
+              <label>{isHindi ? 'Email address' : 'Email address'}<input type="email" name="email" required /></label>
+              <label>{isHindi ? 'Mobile number' : 'Mobile number'}<input name="mobile" required /></label>
+              <label>{isHindi ? 'Country' : 'Country'}<input name="country" required /></label>
+              <label>{isHindi ? 'City' : 'City'}<input name="city" required /></label>
+              <label>{isHindi ? 'LinkedIn profile' : 'LinkedIn profile'}<input type="url" name="linkedin" /></label>
+              <label>{isHindi ? 'Company / organisation' : 'Company / organisation'}<input name="organisation" /></label>
+              <label>{isHindi ? 'Designation' : 'Designation'}<input name="designation" /></label>
               <label>
-                Investor type
+                {isHindi ? 'Investor type' : 'Investor type'}
                 <select name="investorType" required>
                   <option>Individual Angel Investor</option>
                   <option>HNI</option>
@@ -485,7 +515,7 @@ export default function InvestorRoom({ initialView }: { initialView?: ViewMode }
                 </select>
               </label>
               <label>
-                Indicative investment capacity
+                {isHindi ? 'Indicative investment capacity' : 'Indicative investment capacity'}
                 <select name="capacity" required>
                   <option>US$25,000-US$50,000</option>
                   <option>US$50,000-US$100,000</option>
@@ -498,23 +528,23 @@ export default function InvestorRoom({ initialView }: { initialView?: ViewMode }
               </label>
             </div>
             <fieldset>
-              <legend>Areas of interest</legend>
+              <legend>{isHindi ? 'Areas of interest' : 'Areas of interest'}</legend>
               {['MAMAAI', 'EaseTalk', 'Syllabus Synk', 'SabSewa Local', 'Entire RBIL portfolio', 'Strategic partnership', 'Government / institutional partnership', 'Technology collaboration', 'International expansion'].map((item) => (
                 <label className="check-row" key={item}><input type="checkbox" name="areas" value={item} />{item}</label>
               ))}
             </fieldset>
             <div className="form-grid">
-              <label>Have you previously invested in startups?<select name="experience"><option>Yes</option><option>No</option><option>Prefer to discuss</option></select></label>
-              <label>Typical investment ticket size<input name="ticketSize" /></label>
-              <label>Sectors previously invested in<input name="sectors" /></label>
-              <label>Countries where you invest<input name="countries" /></label>
-              <label>Investing personally or for an organisation?<select name="mode"><option>Personally</option><option>On behalf of an organisation</option><option>Both</option></select></label>
+              <label>{isHindi ? 'क्या आपने पहले startups में invest किया है?' : 'Have you previously invested in startups?'}<select name="experience"><option>Yes</option><option>No</option><option>Prefer to discuss</option></select></label>
+              <label>{isHindi ? 'Typical investment ticket size' : 'Typical investment ticket size'}<input name="ticketSize" /></label>
+              <label>{isHindi ? 'पहले invest किए गए sectors' : 'Sectors previously invested in'}<input name="sectors" /></label>
+              <label>{isHindi ? 'Countries where you invest' : 'Countries where you invest'}<input name="countries" /></label>
+              <label>{isHindi ? 'Personally या organisation की ओर से?' : 'Investing personally or for an organisation?'}<select name="mode"><option>Personally</option><option>On behalf of an organisation</option><option>Both</option></select></label>
             </div>
-            <label>Please briefly describe your investment interest and how you may contribute to RBIL's growth.<textarea name="message" rows={5} required /></label>
+            <label>{isHindi ? 'कृपया अपने investment interest और RBIL growth में अपने possible contribution को संक्षेप में बताएं.' : "Please briefly describe your investment interest and how you may contribute to RBIL's growth."}<textarea name="message" rows={5} required /></label>
             <label className="check-row"><input type="checkbox" required />I understand that access to RBIL's private investor materials may contain confidential, proprietary and commercially sensitive information. I agree not to copy, reproduce, distribute, disclose or commercially use such information without prior written permission from Rashi Bhartiya Innovation LLP.</label>
             <label className="check-row"><input type="checkbox" required />I understand that submission of this request does not guarantee access to the Investor Room and does not constitute an offer of securities, partnership interest or investment.</label>
-            <button type="submit">Submit Access Request</button>
-            {submitted ? <p className="success-message"><CheckCircle2 size={18} />Thank you for contacting RBIL. Your question has been received by our team. We will respond to the email address provided by you.</p> : null}
+            <button type="submit">{isHindi ? 'Access Request Submit करें' : 'Submit Access Request'}</button>
+            {submitted ? <p className="success-message"><CheckCircle2 size={18} />{isHindi ? 'RBIL से संपर्क करने के लिए धन्यवाद. आपका request हमारी team को मिल गया है. हम आपके दिए गए email address पर जवाब देंगे.' : 'Thank you for contacting RBIL. Your question has been received by our team. We will respond to the email address provided by you.'}</p> : null}
           </form>
         </section>
       ) : null}
@@ -522,11 +552,12 @@ export default function InvestorRoom({ initialView }: { initialView?: ViewMode }
       {view === 'login' ? (
         <section className="investor-panel login-panel">
           <div>
-            <p className="eyebrow">Secure login model</p>
-            <h1>Existing Investor Login</h1>
+            <p className="eyebrow">{isHindi ? 'Secure login model' : 'Secure login model'}</p>
+            <h1>{isHindi ? 'Existing Investor Login' : 'Existing Investor Login'}</h1>
             <p className="lead">
-              Production deployment should use email/password or magic-link authentication with
-              hashed passwords, secure sessions, CSRF protection, rate limiting and expiry.
+              {isHindi
+                ? 'Production deployment में email/password या magic-link authentication, hashed passwords, secure sessions, CSRF protection, rate limiting और expiry use होनी चाहिए.'
+                : 'Production deployment should use email/password or magic-link authentication with hashed passwords, secure sessions, CSRF protection, rate limiting and expiry.'}
             </p>
           </div>
           <div className="login-options">

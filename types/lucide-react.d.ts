@@ -10,6 +10,7 @@ declare module 'lucide-react' {
   export const Building2: LucideIcon;
   export const Calculator: LucideIcon;
   export const CheckCircle2: LucideIcon;
+  export const ChevronDown: LucideIcon;
   export const CircleDollarSign: LucideIcon;
   export const Database: LucideIcon;
   export const ExternalLink: LucideIcon;

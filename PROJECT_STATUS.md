@@ -1,6 +1,6 @@
 # Project Status: Rashi Bhartiya Innovation LLP Landing Page
 
-Last updated: September 2, 2026
+Last updated: September 4, 2026
 
 ## Project Location
 
@@ -43,6 +43,8 @@ npm run dev
 - Added Rajesh Kumar Khare's professional photograph.
 - Added Phone/WhatsApp contact: `+91 81781 13449`.
 - Added official website email: `admin@rbil.in`.
+- Replaced the previous Gmail contact address wherever it represented RBIL official communication.
+- Routed website enquiry mailto flows to `admin@rbil.in`.
 - Added registered address:
 
 ```text
@@ -68,6 +70,32 @@ Plot No. 1040/29, Flat No.-201, Gali No.-10, Krishna Colony, Gurugram -122001 Ha
   - SabSewa Local: `https://youtu.be/E8HcaSRgv1M?si=VZ-A0B0qjef-UUIn`
 - Added YouTube-style responsive demo thumbnail sections with play icons.
 - Preserved cautious wording so the site does not imply that either project won, was shortlisted, awarded, or officially endorsed.
+- Added a mobile-first **Explore RBIL** quick-navigation section near the top of the landing page.
+- Added a higher-visibility public Investor Relations / Strategic Investment shortcut near the top of the visitor journey.
+- Kept confidential investment details behind the investor access and approval flow.
+- Made every product **Learn More** action functional through dedicated product-detail experiences.
+- Added detailed product storytelling pages for:
+  - MAMAAI
+  - EaseTalk
+  - Syllabus Synk
+  - SabSewa Local
+- Product detail pages now explain:
+  - The Problem
+  - Why We Created It
+  - Our Solution
+  - How It Works
+  - Who Benefits
+  - Impact in India
+  - Global Potential
+  - Future Vision
+- Added the required future corporate structure disclosure across investor participation contexts.
+- Added Investor FAQ wording for possible future conversion/restructuring into a Private Limited Company.
+- Added a public FAQ/unanswered-question style enquiry flow through the RBIL investor FAQ form, routed to `admin@rbil.in`.
+- Added an EN / HI language selector for the public website.
+- English remains the default language.
+- Hindi selection is persisted with browser `localStorage` key `rbil-language`.
+- The selected language is preserved across the landing page, product Learn More pages, and public investor request/login surfaces.
+- Private investor legal and confidential disclosures remain English-authoritative until RBIL approves official Hindi legal translations.
 
 ## Important Content Notes
 
@@ -100,12 +128,50 @@ Current important assets:
 ## Main Files
 
 - `app/page.tsx` contains the landing page content and sections.
+- `app/page.tsx` also contains the centralized public landing-page Hindi copy, quick-navigation copy, product-card copy, and product-detail story copy.
+- `app/investor-room.tsx` contains the Investor Relations entry point, investor access request flow, investor dashboard/admin demo, future corporate structure disclosures, and investor FAQ.
 - `app/globals.css` contains the visual styling and responsive layout.
 - `app/layout.tsx` contains site metadata.
+- `lib/contact.ts` contains the official RBIL contact email constant and mailto helper.
+- `lib/investor-access.ts` contains investor/admin access-control checks used by tests and investor-room gating.
+- `db/investor-room-schema.sql` contains the investor-room database schema draft, including enquiry and investor tables.
+- `scripts/investor-access-tests.mjs` contains access-control test cases.
 - `package.json` contains local development and build commands.
 - `Rashi_Bhartiya_Innovation_LLP_Landing_Page_PRD.md` contains the source PRD.
 
-## Verification
+## Latest Verification
+
+Most recent checks completed on September 4, 2026:
+
+```powershell
+npm run lint
+npx tsc --noEmit
+npm run test:access
+npm run build:amplify
+```
+
+Results:
+
+- Lint passed.
+- TypeScript passed.
+- Investor access-control tests passed.
+- Amplify static build passed.
+- Build output generated in `dist-amplify`.
+- Build still reports a large JavaScript chunk warning; this is a warning, not a build failure.
+
+Browser smoke test performed locally:
+
+- `http://localhost:3000/` loads in English by default.
+- EN / HI selector switches the public landing page to Hindi.
+- Hindi selection persists when opening a product Learn More page.
+- MAMAAI Learn More opened at `/?product=mamaai` and displayed the Hindi product-detail story.
+- Public investor request opened at `/?investor=apply` and preserved Hindi selection.
+- Direct `/investor/apply` returned a local Vinext 404 in dev, so public investor buttons now use query-based working routes:
+  - `/?investor=apply`
+  - `/?investor=login`
+- Existing path checks for `/investor/apply`, `/investor/login`, `/investor`, and `/admin` remain in code for environments that rewrite all routes into the app.
+
+## Previous Verification
 
 The project has previously passed production build checks using:
 

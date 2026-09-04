@@ -1,6 +1,6 @@
 'use client';
 
-import { type SyntheticEvent, useEffect, useRef, useState } from 'react';
+import { type SyntheticEvent, useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowRight,
   Award,
@@ -25,6 +25,17 @@ import { buildMailto, rbilOfficialEmail } from '@/lib/contact';
 import InvestorRoom, { InvestorEntrySection } from './investor-room';
 
 type VisitStatus = 'loading' | 'ready' | 'unavailable' | 'unconfigured';
+type Language = 'en' | 'hi';
+type ProductStory = {
+  name: string;
+  category: string;
+  url: string;
+  image: string;
+  Icon: typeof HeartPulse;
+  accent: string;
+  intro: string;
+  sections: readonly (readonly [string, string])[];
+};
 
 const products = [
   {
@@ -99,9 +110,7 @@ const products = [
   },
 ];
 
-const hackathonProjects = products.filter((product) => product.hackathon);
-
-const productStories = {
+const productStories: Record<string, ProductStory> = {
   mamaai: {
     name: 'MAMAAI',
     category: 'AI Family Wellness & Food Planning',
@@ -182,7 +191,70 @@ const productStories = {
       ['Future Vision', 'SabSewa Local can grow into an AI-assisted hyperlocal commerce network with vendor onboarding, local discovery, order-based monetisation and geographic expansion.'],
     ],
   },
-} as const;
+};
+
+const productStoriesHi: Record<string, ProductStory> = {
+  mamaai: {
+    ...productStories.mamaai,
+    intro:
+      'MAMAAI रोज़ घरों में पूछे जाने वाले सवाल, आज क्या पकाएं, को आसान बनाने के लिए AI आधारित परिवार भोजन और घरेलू meal-planning platform के रूप में विकसित किया जा रहा है।',
+    sections: [
+      ['समस्या', 'परिवारों को भोजन तय करते समय उम्र, स्वाद, क्षेत्रीय खान-पान, स्वास्थ्य जरूरतें, एलर्जी, बजट, घर में उपलब्ध सामग्री और पकाने के समय को साथ लेकर चलना पड़ता है। यह रोज़ का निर्णय कई बार थकाने वाला हो जाता है।'],
+      ['हमने इसे क्यों बनाया', 'RBIL ने meal planning को एक वास्तविक घरेलू समस्या के रूप में पहचाना, जहां व्यावहारिक AI रोज़ की निर्णय-थकान कम कर सकता है और बेहतर food planning में मदद कर सकता है।'],
+      ['हमारा समाधान', 'MAMAAI परिवार के आकार, पसंद, cuisine, nutrition, budget और household needs के आधार पर उपयोगी meal ideas और planning support देने का लक्ष्य रखता है।'],
+      ['यह कैसे काम करता है', 'परिवार अपनी पसंद, restrictions, cuisine choices और planning needs डाल सकता है। Platform meal ideas, planning prompts, grocery thinking और future personalised recommendations में मदद कर सकता है।'],
+      ['किसे लाभ होगा', 'परिवार, caregivers, working parents, senior citizens, wellness-focused households और रोज़ भोजन योजना बनाने वाले लोग इससे लाभ उठा सकते हैं।'],
+      ['भारत में प्रभाव', 'भारत में cuisine, परिवार structure और dietary habits बहुत विविध हैं। Local context समझने वाला AI meal-planning platform regional food choices, budget और nutrition को ध्यान में रखकर मदद कर सकता है।'],
+      ['वैश्विक संभावना', 'Daily food planning की समस्या दुनिया भर में मौजूद है। इस concept को अलग-अलग countries, languages, cultures, allergies, food habits और ingredient availability के अनुसार adapt किया जा सकता है।'],
+      ['भविष्य की दृष्टि', 'लंबी अवधि में MAMAAI एक भरोसेमंद family food assistant बन सकता है, जो planning, grocery coordination, wellness guidance और food/nutrition partnerships को support करे।'],
+    ],
+  },
+  easetalk: {
+    ...productStories.easetalk,
+    intro:
+      'EaseTalk hearing, speech और communication barriers का सामना करने वाले लोगों को practical assistive communication tools से support करने के लिए विकसित किया जा रहा है।',
+    sections: [
+      ['समस्या', 'कई लोग, जिनमें deaf और hard-of-hearing users, speech-related needs वाले व्यक्ति और senior citizens शामिल हैं, घर, public spaces, institutions और services में daily communication barriers का सामना करते हैं।'],
+      ['हमने इसे क्यों बनाया', 'RBIL accessibility को luxury नहीं बल्कि human need मानता है। EaseTalk का उद्देश्य communication को ordinary daily situations में अधिक inclusive और understandable बनाना है।'],
+      ['हमारा समाधान', 'Platform speech-to-text, text-to-speech, live captions और environmental sound alerts जैसी assistive communication capabilities को साथ लाता है।'],
+      ['यह कैसे काम करता है', 'Users spoken communication समझने के लिए captions, अपने संदेश व्यक्त करने के लिए text-to-speech, और surrounding sounds पहचानने के लिए alerts का उपयोग कर सकते हैं।'],
+      ['किसे लाभ होगा', 'Hearing या speech challenges वाले individuals, senior citizens, families, schools, healthcare spaces, public service providers और accessibility-focused institutions को लाभ हो सकता है।'],
+      ['भारत में प्रभाव', 'भारत को भाषाओं, communities और income groups के हिसाब से affordable assistive tools की जरूरत है। EaseTalk homes, education, healthcare और public-facing services में inclusion को support कर सकता है।'],
+      ['वैश्विक संभावना', 'Communication barriers internationally भी मौजूद हैं। Platform concept को different languages, accessibility regulations, care environments और institutional workflows के अनुसार adapt किया जा सकता है।'],
+      ['भविष्य की दृष्टि', 'EaseTalk consumers, institutions, governments और healthcare/community partners के लिए broader accessibility ecosystem बन सकता है।'],
+    ],
+  },
+  'syllabus-synk': {
+    ...productStories['syllabus-synk'],
+    intro:
+      'Syllabus Synk schools, administrators और teachers के लिए AI-powered academic planning platform है, जो annual syllabus goals को practical teaching plans में बदलने में मदद करता है।',
+    sections: [
+      ['समस्या', 'Schools को annual syllabus requirements को lesson schedules, classroom pacing, exam planning, reporting और academic coordination में बदलने में कठिनाई होती है।'],
+      ['हमने इसे क्यों बनाया', 'RBIL ने academic planning को high-responsibility और repetitive task के रूप में पहचाना, जहां teachers और administrators को clarity, coordination और time saving की जरूरत होती है।'],
+      ['हमारा समाधान', 'Syllabus Synk syllabus coverage, lesson schedules, academic calendars, reports और future AI education initiatives को plan करने में support देने का लक्ष्य रखता है।'],
+      ['यह कैसे काम करता है', 'Platform syllabus inputs को timelines, lesson plans, coordination views और reporting workflows में organize कर सकता है।'],
+      ['किसे लाभ होगा', 'Teachers, principals, school administrators, private schools, government schools और education departments को बेहतर academic planning से लाभ हो सकता है।'],
+      ['भारत में प्रभाव', 'भारत में बड़े और विविध school systems हैं। Classes 1-12, teacher planning, administrative visibility और AI readiness के लिए scalable tools उपयोगी हो सकते हैं।'],
+      ['वैश्विक संभावना', 'Schools worldwide syllabus planning और coordination challenges का सामना करते हैं। Concept को different curricula, languages, academic calendars और education systems के अनुसार adapt किया जा सकता है।'],
+      ['भविष्य की दृष्टि', 'Syllabus Synk academic planning, institutional reporting और future-focused AI learning initiatives के लिए school operating layer बन सकता है।'],
+    ],
+  },
+  'sabsewa-local': {
+    ...productStories['sabsewa-local'],
+    intro:
+      'SabSewa Local nearby consumers को nearby vendors से जोड़ने और neighbourhood businesses को digital economy में भाग लेने में मदद करने के लिए विकसित किया जा रहा है।',
+    sections: [
+      ['समस्या', 'Commerce के digital होने के साथ कई neighbourhood shopkeepers और small service providers online visibility, local orders और बड़े platforms से competition में संघर्ष करते हैं।'],
+      ['हमने इसे क्यों बनाया', 'RBIL local commerce को community-strengthening opportunity मानता है। SabSewa Local nearby needs, trusted vendors और small businesses के practical digital access पर आधारित है।'],
+      ['हमारा समाधान', 'Platform consumers के लिए hyperlocal purchasing को convenient बनाते हुए vendors को digital presence, local orders और locality-based growth में मदद करने का लक्ष्य रखता है।'],
+      ['यह कैसे काम करता है', 'Consumers nearby shops, vendors और services खोज सकते हैं। Vendors को onboard, list और local demand से connect किया जा सकता है।'],
+      ['किसे लाभ होगा', 'Local consumers, shopkeepers, service providers, delivery partners, neighbourhood markets और community commerce networks को लाभ हो सकता है।'],
+      ['भारत में प्रभाव', 'भारत में small retailers और local service providers की बहुत बड़ी संख्या है। Hyperlocal platform neighbourhood commerce को बनाए रखते हुए local businesses को digitise करने में मदद कर सकता है।'],
+      ['वैश्विक संभावना', 'Local-business digitisation कई देशों में relevant है। Model को different cities, languages, payment habits, delivery models और local-commerce ecosystems के अनुसार adapt किया जा सकता है।'],
+      ['भविष्य की दृष्टि', 'SabSewa Local vendor onboarding, local discovery, order-based monetisation और geographic expansion के साथ AI-assisted hyperlocal commerce network बन सकता है।'],
+    ],
+  },
+};
 
 const principles = [
   ['Human Problems First', 'We begin with lived challenges.'],
@@ -250,6 +322,48 @@ const quickLinks = [
   },
 ];
 
+const hiProducts = {
+  easetalk: {
+    category: 'सहायक संचार',
+    hook: 'संचार हर व्यक्ति के लिए सुलभ होना चाहिए।',
+    description:
+      'Hearing, speech और communication needs वाले users, senior citizens और institutions के लिए AI-enabled communication और sound-awareness solution.',
+    users: 'Individuals, families, senior citizens, institutions',
+  },
+  'syllabus-synk': {
+    category: 'शिक्षा योजना',
+    hook: 'शिक्षकों को पढ़ाने के लिए अधिक समय और बेहतर planning मिलनी चाहिए।',
+    description:
+      'Academic schedules, syllabus delivery, lesson planning, examinations और reporting के लिए school planning platform.',
+    users: 'Schools, teachers, education leaders',
+  },
+  mamaai: {
+    category: 'परिवार भोजन और wellness',
+    hook: 'Family meals की planning caring होनी चाहिए, complicated नहीं।',
+    description:
+      'Preferences, dietary restrictions, region, season, budget, wellness needs और grocery planning के लिए intelligent family meal-planning assistant.',
+    users: 'Families, caregivers, wellness-focused households',
+  },
+  'sabsewa-local': {
+    category: 'Hyperlocal commerce और services',
+    hook: 'Local needs के लिए local और trusted solutions जरूरी हैं।',
+    description:
+      'Nearby customers को local vendors और service providers से जोड़ने वाला hyperlocal platform, जो local livelihoods को support करता है.',
+    users: 'Local customers, vendors, service providers',
+  },
+} as const;
+
+const hiQuickLinks = {
+  'Our Innovations': ['हमारे Innovations', 'RBIL के AI solutions देखें'],
+  'Four Projects, One Vision': ['चार Projects, एक Vision', 'देखें हम क्या बना रहे हैं'],
+  'Our Impact': ['हमारा Impact', 'Real-world problems के लिए technology'],
+  'Partner With Us': ['Partner With Us', 'Strategic और institutional collaboration'],
+  'Investor Relations': ['Investor Relations', 'RBIL के चार AI platforms के growth opportunity को जानें'],
+  'Our Journey': ['हमारी Journey', 'Innovation, hackathons और milestones'],
+  'Founder Story': ['Founder Story', 'RBIL के vision के पीछे की कहानी'],
+  'Connect With RBIL': ['RBIL से जुड़ें', 'आइए साथ मिलकर बनाएं'],
+} as const;
+
 const partners = [
   {
     title: 'Government and Public-Sector Pilots',
@@ -283,6 +397,15 @@ const partners = [
   },
 ];
 
+const hiPartnerTitles: Record<string, string> = {
+  'Government and Public-Sector Pilots': 'Government और public-sector pilots',
+  'School and Institutional Adoption': 'School और institutional adoption',
+  'NGO and Community Partnerships': 'NGO और community partnerships',
+  'Research and Technology Collaboration': 'Research और technology collaboration',
+  'Incubation, Grants, and Investment Discussions': 'Incubation, grants और investment discussions',
+  'Vendor and Local Ecosystem Partnerships': 'Vendor और local ecosystem partnerships',
+};
+
 const founderPhone = '+91 81781 13449';
 
 const getVisitorCounterEndpoint = () => {
@@ -294,14 +417,44 @@ const getVisitorCounterEndpoint = () => {
 };
 
 export default function Home() {
+  const [language, setLanguage] = useState<Language>(() => {
+    if (typeof window === 'undefined') {
+      return 'en';
+    }
+
+    const savedLanguage = window.localStorage.getItem('rbil-language');
+    return savedLanguage === 'hi' || savedLanguage === 'en' ? savedLanguage : 'en';
+  });
   const [selectedInterest, setSelectedInterest] = useState('Partnership');
   const [visitCount, setVisitCount] = useState<number | null>(null);
   const [visitStatus, setVisitStatus] = useState<VisitStatus>('loading');
   const [contactSubmitted, setContactSubmitted] = useState(false);
   const countedVisitRef = useRef(false);
   const pathname = typeof window !== 'undefined' ? window.location.pathname : '/';
+  const investorParam =
+    typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('investor') : null;
   const productParam =
     typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('product') : null;
+  const isHindi = language === 'hi';
+  const activeProductStories = isHindi ? productStoriesHi : productStories;
+  const displayProducts = useMemo(
+    () =>
+      products.map((product) => ({
+        ...product,
+        ...(isHindi ? hiProducts[product.id as keyof typeof hiProducts] : {}),
+      })),
+    [isHindi],
+  );
+  const displayHackathonProjects = displayProducts.filter((product) => product.hackathon);
+  const displayQuickLinks = quickLinks.map((link) => {
+    const translated = isHindi ? hiQuickLinks[link.title as keyof typeof hiQuickLinks] : null;
+    return translated ? { ...link, title: translated[0], text: translated[1] } : link;
+  });
+
+  useEffect(() => {
+    window.localStorage.setItem('rbil-language', language);
+    document.documentElement.lang = language === 'hi' ? 'hi' : 'en';
+  }, [language]);
 
   useEffect(() => {
     if (countedVisitRef.current) {
@@ -389,27 +542,44 @@ export default function Home() {
   };
 
   if (pathname.startsWith('/admin')) {
-    return <InvestorRoom initialView="admin" />;
+    return <InvestorRoom initialView="admin" language={language} />;
+  }
+
+  if (investorParam === 'login') {
+    return <InvestorRoom initialView="login" language={language} />;
+  }
+
+  if (investorParam === 'apply') {
+    return <InvestorRoom initialView="request" language={language} />;
+  }
+
+  if (investorParam === 'dashboard') {
+    return <InvestorRoom initialView="dashboard" language={language} />;
   }
 
   if (pathname.startsWith('/investor/login')) {
-    return <InvestorRoom initialView="login" />;
+    return <InvestorRoom initialView="login" language={language} />;
   }
 
   if (pathname.startsWith('/investor/apply')) {
-    return <InvestorRoom initialView="request" />;
+    return <InvestorRoom initialView="request" language={language} />;
   }
 
   if (pathname.startsWith('/investor')) {
-    return <InvestorRoom initialView="dashboard" />;
+    return <InvestorRoom initialView="dashboard" language={language} />;
   }
 
-  const productSlug = (productParam || pathname.match(/^\/products\/([^/]+)/)?.[1]) as
-    | keyof typeof productStories
-    | undefined;
+  const productSlug = productParam || pathname.match(/^\/products\/([^/]+)/)?.[1];
 
-  if (productSlug && productStories[productSlug]) {
-    return <ProductDetailPage product={productStories[productSlug]} />;
+  if (productSlug && activeProductStories[productSlug]) {
+    return (
+      <ProductDetailPage
+        product={activeProductStories[productSlug]}
+        stories={activeProductStories}
+        language={language}
+        onLanguageChange={setLanguage}
+      />
+    );
   }
 
   return (
@@ -427,44 +597,51 @@ export default function Home() {
           </span>
         </a>
         <nav aria-label="Primary navigation">
-          <a href="#products">Products</a>
-          <a href="#achievements">Achievements</a>
-          <a href="#research">Research</a>
-          <a href="#founder">Founder</a>
-          <a href="#partnerships">Partnerships</a>
-          <a href="#investors">Investors</a>
-          <a href="#contact">Contact</a>
+          <a href="#products">{isHindi ? 'Products' : 'Products'}</a>
+          <a href="#achievements">{isHindi ? 'Milestones' : 'Achievements'}</a>
+          <a href="#research">{isHindi ? 'Research' : 'Research'}</a>
+          <a href="#founder">{isHindi ? 'Founder' : 'Founder'}</a>
+          <a href="#partnerships">{isHindi ? 'Partnerships' : 'Partnerships'}</a>
+          <a href="#investors">{isHindi ? 'Investors' : 'Investors'}</a>
+          <a href="#contact">{isHindi ? 'Contact' : 'Contact'}</a>
         </nav>
         <div className="header-actions">
-          <button className="language" type="button" aria-label="Language selector">
+          <label className="language" aria-label="Language selector">
             <Languages size={16} />
-            EN / HI
-          </button>
+            <select
+              value={language}
+              onChange={(event) => setLanguage(event.target.value as Language)}
+              aria-label="Select website language"
+            >
+              <option value="en">EN</option>
+              <option value="hi">हिन्दी</option>
+            </select>
+          </label>
           <a className="header-cta" href="#products">
-            Explore Solutions
+            {isHindi ? 'Solutions देखें' : 'Explore Solutions'}
           </a>
         </div>
       </header>
 
       <section className="hero" id="home">
         <div className="hero-copy">
-          <p className="eyebrow">People-first innovation from India for the world</p>
-          <h1>Transforming Everyday Challenges into Meaningful Digital Solutions</h1>
+          <p className="eyebrow">{isHindi ? 'भारत से दुनिया के लिए people-first innovation' : 'People-first innovation from India for the world'}</p>
+          <h1>{isHindi ? 'रोज़मर्रा की चुनौतियों को सार्थक डिजिटल समाधानों में बदलना' : 'Transforming Everyday Challenges into Meaningful Digital Solutions'}</h1>
           <p className="lead">
-            Rashi Bhartiya Innovation LLP researches real human needs and develops accessible,
-            affordable, and intelligent solutions for communication, education, family wellness,
-            and hyperlocal services.
+            {isHindi
+              ? 'Rashi Bhartiya Innovation LLP वास्तविक मानवीय जरूरतों पर research करके communication, education, family wellness और hyperlocal services के लिए accessible, affordable और intelligent solutions विकसित करता है.'
+              : 'Rashi Bhartiya Innovation LLP researches real human needs and develops accessible, affordable, and intelligent solutions for communication, education, family wellness, and hyperlocal services.'}
           </p>
           <div className="actions">
             <a className="button primary" href="#products">
-              Explore Our Products <ArrowRight size={18} />
+              {isHindi ? 'हमारे Products देखें' : 'Explore Our Products'} <ArrowRight size={18} />
             </a>
-            <a className="button secondary" href="#partnerships">
-              Partner With Us
+          <a className="button secondary" href="#partnerships">
+              {isHindi ? 'RBIL से जुड़ें' : 'Partner With Us'}
             </a>
           </div>
           <div className="visitor-counter" aria-live="polite">
-            <span>Public Visit Counter</span>
+            <span>{isHindi ? 'Public Visit Counter' : 'Public Visit Counter'}</span>
             {visitStatus === 'ready' && visitCount !== null ? (
               <strong>{new Intl.NumberFormat('en-IN').format(visitCount)}</strong>
             ) : (
@@ -472,25 +649,25 @@ export default function Home() {
             )}
             <small>
               {visitStatus === 'ready'
-                ? 'Total page visits confirmed by the production database.'
+                ? isHindi ? 'Production database से confirmed total page visits.' : 'Total page visits confirmed by the production database.'
                 : visitStatus === 'unconfigured'
-                  ? 'Production counter API is not connected yet.'
-                  : 'Counter service is temporarily unavailable.'}
+                  ? isHindi ? 'Production counter API अभी connected नहीं है.' : 'Production counter API is not connected yet.'
+                  : isHindi ? 'Counter service temporarily unavailable है.' : 'Counter service is temporarily unavailable.'}
             </small>
           </div>
           <div className="stamp" aria-label="Innovation commitment">
-            <strong>Researching People's Real-Life Pain Points</strong>
-            <span>Analysing root causes | Building practical solutions</span>
+            <strong>{isHindi ? 'लोगों की वास्तविक समस्याओं पर research' : "Researching People's Real-Life Pain Points"}</strong>
+            <span>{isHindi ? 'Root causes का analysis | Practical solutions का निर्माण' : 'Analysing root causes | Building practical solutions'}</span>
           </div>
         </div>
 
         <div className="hero-visual" aria-label="Rashi Bhartiya Innovation solution ecosystem">
           <div className="visual-core">
             <Sparkles size={30} />
-            <span>One Vision</span>
-            <strong>Four Solutions</strong>
+            <span>{isHindi ? 'एक Vision' : 'One Vision'}</span>
+            <strong>{isHindi ? 'चार Solutions' : 'Four Solutions'}</strong>
           </div>
-          {products.map(({ name, category, accent, Icon }) => (
+          {displayProducts.map(({ name, category, accent, Icon }) => (
             <article className={`solution-node ${accent}`} key={name}>
               <Icon size={24} aria-hidden="true" />
               <span>{category}</span>
@@ -503,27 +680,35 @@ export default function Home() {
       <section className="explore-rbil" aria-labelledby="explore-rbil-title">
         <div className="explore-rbil-head">
           <div>
-            <p className="eyebrow">Explore RBIL</p>
-            <h2 id="explore-rbil-title">Find the Right Path in Seconds</h2>
+            <p className="eyebrow">{isHindi ? 'RBIL देखें' : 'Explore RBIL'}</p>
+            <h2 id="explore-rbil-title">{isHindi ? 'कुछ सेकंड में सही जानकारी तक पहुंचें' : 'Find the Right Path in Seconds'}</h2>
           </div>
-          <p>Who we are, what we are building, why it matters, and how to connect.</p>
+          <p>{isHindi ? 'हम कौन हैं, क्या बना रहे हैं, यह क्यों महत्वपूर्ण है, और आप कैसे जुड़ सकते हैं.' : 'Who we are, what we are building, why it matters, and how to connect.'}</p>
         </div>
         <div className="quick-link-rail" aria-label="Landing page quick navigation">
-          {quickLinks.map(({ title, text, href, Icon, featured }) => (
+          {displayQuickLinks.map(({ title, text, href, Icon, featured }) => (
             <a className={`quick-link-card${featured ? ' investor-shortcut' : ''}`} href={href} key={title}>
               <Icon size={22} aria-hidden="true" />
               <span>
                 <strong>{title}</strong>
                 <small>{text}</small>
               </span>
-              {featured ? <em>Explore Investor Opportunities</em> : null}
+              {featured ? <em>{isHindi ? 'Investor Opportunities देखें' : 'Explore Investor Opportunities'}</em> : null}
             </a>
           ))}
         </div>
       </section>
 
       <section className="principles" aria-label="Trust and purpose principles">
-        {principles.map(([title, body]) => (
+        {(isHindi
+          ? [
+              ['Human Problems First', 'हम शुरुआत लोगों की वास्तविक चुनौतियों से करते हैं.'],
+              ['Research Before Development', 'हम needs, barriers और gaps को समझते हैं.'],
+              ['Accessible by Design', 'हम inclusive और affordable solutions की दिशा में काम करते हैं.'],
+              ['Built for Meaningful Scale', 'हम communities, institutions और public systems के लिए design करते हैं.'],
+            ]
+          : principles
+        ).map(([title, body]) => (
           <article key={title}>
             <CheckCircle2 size={20} aria-hidden="true" />
             <h2>{title}</h2>
@@ -534,15 +719,16 @@ export default function Home() {
 
       <section className="section" id="products">
         <div className="section-head">
-          <p className="eyebrow">Product ecosystem</p>
-          <h2>Four Solutions. One Human-Centred Mission.</h2>
+          <p className="eyebrow">{isHindi ? 'Product ecosystem' : 'Product ecosystem'}</p>
+          <h2>{isHindi ? 'चार Solutions. एक Human-Centred Mission.' : 'Four Solutions. One Human-Centred Mission.'}</h2>
           <p>
-            Each product starts with a human problem and guides visitors toward the right live
-            solution without making the parent-company purpose disappear.
+            {isHindi
+              ? 'हर product एक वास्तविक human problem से शुरू होता है और visitor को सही live solution तक ले जाता है.'
+              : 'Each product starts with a human problem and guides visitors toward the right live solution without making the parent-company purpose disappear.'}
           </p>
         </div>
         <div className="product-grid">
-          {products.map(({ id, name, category, hook, description, users, url, image, imageAlt, hackathon, accent, Icon }) => (
+          {displayProducts.map(({ id, name, category, hook, description, users, url, image, imageAlt, hackathon, accent, Icon }) => (
             <article className={`product-card ${accent}`} id={id} key={name}>
               <a className="product-thumb" href={url} target="_blank" rel="noopener noreferrer">
                 <img src={image} alt={imageAlt} loading="lazy" />
@@ -581,13 +767,13 @@ export default function Home() {
                 </a>
               ) : null}
               <div className="product-actions">
-                <a href={`/?product=${id}`}>Learn More</a>
+                <a href={`/?product=${id}`}>{isHindi ? 'और जानें' : 'Learn More'}</a>
                 <a href={url} target="_blank" rel="noopener noreferrer">
-                  Open Product <ExternalLink size={15} />
+                  {isHindi ? 'Product खोलें' : 'Open Product'} <ExternalLink size={15} />
                 </a>
                 {hackathon ? (
                   <a href={hackathon.videoUrl} target="_blank" rel="noopener noreferrer">
-                    Watch 3-Minute Hackathon Demo <PlayCircle size={15} />
+                    {isHindi ? '3-Minute Hackathon Demo देखें' : 'Watch 3-Minute Hackathon Demo'} <PlayCircle size={15} />
                   </a>
                 ) : null}
               </div>
@@ -598,19 +784,17 @@ export default function Home() {
 
       <section className="section achievements" id="achievements">
         <div className="section-head">
-          <p className="eyebrow">Achievements and recognition</p>
-          <h2>Gemini XPRIZE Hackathon 2026 Participation</h2>
+          <p className="eyebrow">{isHindi ? 'Achievements और recognition' : 'Achievements and recognition'}</p>
+          <h2>{isHindi ? 'Gemini XPRIZE Hackathon 2026 Participation' : 'Gemini XPRIZE Hackathon 2026 Participation'}</h2>
           <p>
-            SabSewa Local and MAMAAI participated in the Gemini XPRIZE Hackathon 2026, where their
-            three-minute project demonstration videos were submitted. This statement reflects
-            participation only and does not imply that either project won, was shortlisted, received
-            an award, or was officially endorsed by Gemini, Google, XPRIZE, or the Hackathon
-            organisers.
+            {isHindi
+              ? 'SabSewa Local और MAMAAI ने Gemini XPRIZE Hackathon 2026 में participation किया, जहां उनके three-minute project demonstration videos submit किए गए. यह statement केवल participation बताता है; इससे win, shortlist, award या endorsement imply नहीं होता.'
+              : 'SabSewa Local and MAMAAI participated in the Gemini XPRIZE Hackathon 2026, where their three-minute project demonstration videos were submitted. This statement reflects participation only and does not imply that either project won, was shortlisted, received an award, or was officially endorsed by Gemini, Google, XPRIZE, or the Hackathon organisers.'}
           </p>
-          <p className="channel-note">Demo videos are from the @AiKiDuniyaofficialpage YouTube channel.</p>
+          <p className="channel-note">{isHindi ? 'Demo videos @AiKiDuniyaofficialpage YouTube channel से हैं.' : 'Demo videos are from the @AiKiDuniyaofficialpage YouTube channel.'}</p>
         </div>
         <div className="demo-grid">
-          {hackathonProjects.map(({ name, description, hackathon, accent }) => (
+          {displayHackathonProjects.map(({ name, description, hackathon, accent }) => (
             <article className={`demo-card ${accent}`} key={name}>
               <a
                 className="video-thumb"
@@ -636,18 +820,18 @@ export default function Home() {
                 <div className="demo-title-row">
                   <h3>{name}</h3>
                   <a href={hackathon?.videoUrl} target="_blank" rel="noopener noreferrer">
-                    Watch Demo <ExternalLink size={14} />
+                    {isHindi ? 'Demo देखें' : 'Watch Demo'} <ExternalLink size={14} />
                   </a>
                 </div>
                 <p>{description}</p>
                 <p className="submitted-label">{hackathon?.submittedLabel}</p>
                 <p className="disclaimer">
-                  Demo video submitted for the Hackathon. Participation wording only; no award,
-                  shortlist, endorsement, or win is claimed here by Gemini, Google, XPRIZE, or the
-                  Hackathon organisers.
+                  {isHindi
+                    ? 'Demo video Hackathon के लिए submit किया गया. यह केवल participation wording है; Gemini, Google, XPRIZE या organisers की ओर से award, shortlist, endorsement या win का दावा नहीं है.'
+                    : 'Demo video submitted for the Hackathon. Participation wording only; no award, shortlist, endorsement, or win is claimed here by Gemini, Google, XPRIZE, or the Hackathon organisers.'}
                 </p>
                 <a className="button secondary demo-button" href={hackathon?.videoUrl} target="_blank" rel="noopener noreferrer">
-                  Watch 3-Minute Hackathon Demo <ExternalLink size={16} />
+                  {isHindi ? '3-Minute Hackathon Demo देखें' : 'Watch 3-Minute Hackathon Demo'} <ExternalLink size={16} />
                 </a>
               </div>
             </article>
@@ -657,15 +841,16 @@ export default function Home() {
 
       <section className="section detail-pages" id="product-details">
         <div className="section-head">
-          <p className="eyebrow">Detailed product pages</p>
-          <h2>Hackathon Demo Details</h2>
+          <p className="eyebrow">{isHindi ? 'Detailed product pages' : 'Detailed product pages'}</p>
+          <h2>{isHindi ? 'Hackathon Demo Details' : 'Hackathon Demo Details'}</h2>
           <p>
-            These detailed project sections help visitors understand the MAMAAI and SabSewa Local
-            submissions without implying award status or official endorsement.
+            {isHindi
+              ? 'ये detailed project sections visitors को MAMAAI और SabSewa Local submissions समझने में मदद करते हैं, बिना award status या official endorsement imply किए.'
+              : 'These detailed project sections help visitors understand the MAMAAI and SabSewa Local submissions without implying award status or official endorsement.'}
           </p>
         </div>
         <div className="detail-grid">
-          {hackathonProjects.map(({ name, hook, description, url, hackathon, accent }) => (
+          {displayHackathonProjects.map(({ name, hook, description, url, hackathon, accent }) => (
             <article className={`detail-card ${accent}`} key={`detail-${name}`}>
               <a
                 className="video-thumb"
@@ -694,10 +879,10 @@ export default function Home() {
                 <p className="submitted-label">{hackathon?.submittedLabel}</p>
                 <div className="product-actions">
                   <a href={url} target="_blank" rel="noopener noreferrer">
-                    Open Product <ExternalLink size={15} />
+                    {isHindi ? 'Product खोलें' : 'Open Product'} <ExternalLink size={15} />
                   </a>
                   <a href={hackathon?.videoUrl} target="_blank" rel="noopener noreferrer">
-                    Watch 3-Minute Hackathon Demo <PlayCircle size={15} />
+                    {isHindi ? '3-Minute Hackathon Demo देखें' : 'Watch 3-Minute Hackathon Demo'} <PlayCircle size={15} />
                   </a>
                 </div>
               </div>
@@ -708,52 +893,53 @@ export default function Home() {
 
       <section className="section split" id="research">
         <div>
-          <p className="eyebrow">Research & innovation</p>
-          <h2>We Do Not Start With Technology. We Start With People.</h2>
+          <p className="eyebrow">{isHindi ? 'Research और innovation' : 'Research & innovation'}</p>
+          <h2>{isHindi ? 'हम technology से नहीं, लोगों से शुरुआत करते हैं.' : 'We Do Not Start With Technology. We Start With People.'}</h2>
           <p>
-            The company studies recurring difficulties, root causes, affordability barriers,
-            accessibility needs, language context, and practical adoption before shaping digital
-            solutions.
+            {isHindi
+              ? 'Company digital solutions बनाने से पहले recurring difficulties, root causes, affordability barriers, accessibility needs, language context और practical adoption को समझती है.'
+              : 'The company studies recurring difficulties, root causes, affordability barriers, accessibility needs, language context, and practical adoption before shaping digital solutions.'}
           </p>
           <div className="commitment">
             <ShieldCheck size={24} aria-hidden="true" />
-            <strong>Bold commitment</strong>
+            <strong>{isHindi ? 'स्पष्ट commitment' : 'Bold commitment'}</strong>
             <span>
-              Every initiative begins with a genuine human problem, disciplined research, and the
-              search for a practical, inclusive solution.
+              {isHindi
+                ? 'हर initiative एक genuine human problem, disciplined research और practical, inclusive solution की खोज से शुरू होता है.'
+                : 'Every initiative begins with a genuine human problem, disciplined research, and the search for a practical, inclusive solution.'}
             </span>
           </div>
         </div>
         <ol className="process">
           <li>
-            <strong>Listen</strong>
-            <span>Identify recurring difficulties faced by people and institutions.</span>
+            <strong>{isHindi ? 'सुनना' : 'Listen'}</strong>
+            <span>{isHindi ? 'लोगों और institutions की recurring difficulties पहचानना.' : 'Identify recurring difficulties faced by people and institutions.'}</span>
           </li>
           <li>
-            <strong>Research & Analyse</strong>
-            <span>Study root causes, existing solutions, and user context.</span>
+            <strong>{isHindi ? 'Research और Analyse' : 'Research & Analyse'}</strong>
+            <span>{isHindi ? 'Root causes, existing solutions और user context समझना.' : 'Study root causes, existing solutions, and user context.'}</span>
           </li>
           <li>
-            <strong>Design & Validate</strong>
-            <span>Develop practical solutions and test them with relevant users.</span>
+            <strong>{isHindi ? 'Design और Validate' : 'Design & Validate'}</strong>
+            <span>{isHindi ? 'Practical solutions बनाना और relevant users के साथ test करना.' : 'Develop practical solutions and test them with relevant users.'}</span>
           </li>
           <li>
-            <strong>Improve & Scale</strong>
-            <span>Use feedback and evidence to strengthen wider adoption.</span>
+            <strong>{isHindi ? 'Improve और Scale' : 'Improve & Scale'}</strong>
+            <span>{isHindi ? 'Feedback और evidence से wider adoption को मजबूत करना.' : 'Use feedback and evidence to strengthen wider adoption.'}</span>
           </li>
         </ol>
       </section>
 
       <section className="section impact" id="impact">
         <div className="section-head">
-          <p className="eyebrow">Impact areas</p>
-          <h2>Built Around Everyday Outcomes</h2>
+          <p className="eyebrow">{isHindi ? 'Impact areas' : 'Impact areas'}</p>
+          <h2>{isHindi ? 'Everyday outcomes के आसपास बनाया गया' : 'Built Around Everyday Outcomes'}</h2>
         </div>
         <div className="impact-grid">
-          <span>Inclusive communication and independent living</span>
-          <span>Smarter academic planning and AI readiness</span>
-          <span>Better family meal organisation and wellness awareness</span>
-          <span>Stronger neighbourhood economies and local livelihoods</span>
+          <span>{isHindi ? 'Inclusive communication और independent living' : 'Inclusive communication and independent living'}</span>
+          <span>{isHindi ? 'Smarter academic planning और AI readiness' : 'Smarter academic planning and AI readiness'}</span>
+          <span>{isHindi ? 'बेहतर family meal organisation और wellness awareness' : 'Better family meal organisation and wellness awareness'}</span>
+          <span>{isHindi ? 'मजबूत neighbourhood economies और local livelihoods' : 'Stronger neighbourhood economies and local livelihoods'}</span>
         </div>
       </section>
 
@@ -764,39 +950,37 @@ export default function Home() {
             src="/founder-photo.png"
             alt="Rajesh Kumar Khare, Founder and Director of Rashi Bhartiya Innovation LLP"
           />
-          <span>Professional photograph</span>
+          <span>{isHindi ? 'Professional photograph' : 'Professional photograph'}</span>
         </div>
         <div className="founder-card">
           <div className="founder-mark">
             <UsersRound size={36} aria-hidden="true" />
           </div>
           <div>
-            <p className="eyebrow">Founder&apos;s Profile</p>
+            <p className="eyebrow">{isHindi ? 'Founder Profile' : 'Founder&apos;s Profile'}</p>
             <h2>Rajesh Kumar Khare</h2>
-            <p className="founder-role">Founder and Director, Rashi Bhartiya Innovation LLP</p>
+            <p className="founder-role">{isHindi ? 'Founder और Director, Rashi Bhartiya Innovation LLP' : 'Founder and Director, Rashi Bhartiya Innovation LLP'}</p>
             <p>
-              Rajesh Kumar Khare is an Indian Air Force veteran with 15 years of distinguished
-              service and more than 40 years of involvement in social work and community engagement.
-              His diverse professional and social experience has given him a deep understanding of
-              the real-life challenges and pain points faced by ordinary people.
+              {isHindi
+                ? 'Rajesh Kumar Khare Indian Air Force veteran हैं, जिनके पास 15 वर्ष की distinguished service और 40 वर्ष से अधिक social work तथा community engagement का अनुभव है. उनके विविध professional और social experience ने उन्हें ordinary people की real-life challenges और pain points की गहरी समझ दी है.'
+                : 'Rajesh Kumar Khare is an Indian Air Force veteran with 15 years of distinguished service and more than 40 years of involvement in social work and community engagement. His diverse professional and social experience has given him a deep understanding of the real-life challenges and pain points faced by ordinary people.'}
             </p>
             <p>
-              At the age of 64, he began exploring and understanding the transformative potential of
-              Artificial Intelligence. By the age of 66, he started developing practical, affordable,
-              and AI-powered application solutions to address people&apos;s everyday problems.
+              {isHindi
+                ? '64 वर्ष की आयु में उन्होंने Artificial Intelligence की transformative potential को explore और समझना शुरू किया. 66 वर्ष की आयु तक उन्होंने लोगों की everyday problems के लिए practical, affordable और AI-powered application solutions विकसित करना शुरू किया.'
+                : 'At the age of 64, he began exploring and understanding the transformative potential of Artificial Intelligence. By the age of 66, he started developing practical, affordable, and AI-powered application solutions to address people&apos;s everyday problems.'}
             </p>
             <div className="founder-belief">
               <SearchCheck size={22} aria-hidden="true" />
               <span>
-                The company&apos;s innovations are not driven by technology alone. They originate from
-                decades of real-world experience, close interaction with communities, careful
-                research and analysis, and a genuine commitment to developing simple, inclusive, and
-                affordable digital solutions for the masses.
+                {isHindi
+                  ? 'Company के innovations केवल technology से driven नहीं हैं. वे decades of real-world experience, communities के साथ close interaction, careful research and analysis, और masses के लिए simple, inclusive और affordable digital solutions बनाने की genuine commitment से आते हैं.'
+                  : 'The company&apos;s innovations are not driven by technology alone. They originate from decades of real-world experience, close interaction with communities, careful research and analysis, and a genuine commitment to developing simple, inclusive, and affordable digital solutions for the masses.'}
               </span>
             </div>
             <a className="phone-link" href="tel:+918178113449">
               <Phone size={18} aria-hidden="true" />
-              Phone/WhatsApp: {founderPhone}
+              {isHindi ? 'Phone/WhatsApp' : 'Phone/WhatsApp'}: {founderPhone}
             </a>
           </div>
         </div>
@@ -804,11 +988,12 @@ export default function Home() {
 
       <section className="section partnerships" id="partnerships">
         <div className="section-head">
-          <p className="eyebrow">Partnerships</p>
-          <h2>Let's Solve Meaningful Problems Together.</h2>
+          <p className="eyebrow">{isHindi ? 'Partnerships' : 'Partnerships'}</p>
+          <h2>{isHindi ? 'आइए meaningful problems को साथ मिलकर solve करें.' : 'Let&apos;s Solve Meaningful Problems Together.'}</h2>
           <p>
-            Rashi Bhartiya Innovation LLP welcomes conversations with public-sector teams, schools,
-            NGOs, research partners, investors, vendors, and local ecosystem collaborators.
+            {isHindi
+              ? 'Rashi Bhartiya Innovation LLP public-sector teams, schools, NGOs, research partners, investors, vendors और local ecosystem collaborators के साथ conversations का स्वागत करता है.'
+              : 'Rashi Bhartiya Innovation LLP welcomes conversations with public-sector teams, schools, NGOs, research partners, investors, vendors, and local ecosystem collaborators.'}
           </p>
         </div>
         <div className="partner-list">
@@ -833,27 +1018,27 @@ export default function Home() {
                 : {})}
             >
               <HandHeart size={18} aria-hidden="true" />
-              <span>{partner.title}</span>
+              <span>{isHindi ? hiPartnerTitles[partner.title] : partner.title}</span>
               {partner.external ? <ExternalLink size={16} aria-hidden="true" /> : <ArrowRight size={16} aria-hidden="true" />}
             </a>
           ))}
         </div>
       </section>
 
-      <InvestorEntrySection />
+      <InvestorEntrySection language={language} />
 
       <section className="section contact" id="contact">
         <div>
-          <p className="eyebrow">Contact</p>
-          <h2>A Better Future Begins by Solving the Problems People Face Today.</h2>
+          <p className="eyebrow">{isHindi ? 'Contact' : 'Contact'}</p>
+          <h2>{isHindi ? 'बेहतर future आज लोगों की problems solve करने से शुरू होता है.' : 'A Better Future Begins by Solving the Problems People Face Today.'}</h2>
           <p>
-            This first release includes the approved registered address and a ready contact-form
-            layout. Suggestions, partnership enquiries, and product-demo requests can also be sent
-            directly by email.
+            {isHindi
+              ? 'Suggestions, partnership enquiries, product-demo requests और general questions सीधे official email या नीचे दिए गए form से भेजे जा सकते हैं.'
+              : 'This first release includes the approved registered address and a ready contact-form layout. Suggestions, partnership enquiries, and product-demo requests can also be sent directly by email.'}
           </p>
           <a className="email-link" href={`mailto:${rbilOfficialEmail}`}>
             <Mail size={18} aria-hidden="true" />
-            Official email: {rbilOfficialEmail}
+            {isHindi ? 'Official email' : 'Official email'}: {rbilOfficialEmail}
           </a>
           <div className="address">
             <MapPin size={22} aria-hidden="true" />
@@ -864,28 +1049,28 @@ export default function Home() {
           </div>
           <a className="phone-link contact-phone" href="tel:+918178113449">
             <Phone size={18} aria-hidden="true" />
-            Phone/WhatsApp: {founderPhone}
+            {isHindi ? 'Phone/WhatsApp' : 'Phone/WhatsApp'}: {founderPhone}
           </a>
         </div>
         <form onSubmit={handleContactSubmit}>
           <label>
-            Full name
+            {isHindi ? 'पूरा नाम' : 'Full name'}
             <input type="text" name="name" autoComplete="name" required />
           </label>
           <label>
-            Organisation
+            {isHindi ? 'Organisation' : 'Organisation'}
             <input type="text" name="organisation" autoComplete="organization" />
           </label>
           <label>
-            Country
+            {isHindi ? 'Country' : 'Country'}
             <input type="text" name="country" autoComplete="country-name" required />
           </label>
           <label>
-            Email
+            {isHindi ? 'Email' : 'Email'}
             <input type="email" name="email" autoComplete="email" required />
           </label>
           <label>
-            Area of interest
+            {isHindi ? 'Area of interest' : 'Area of interest'}
             <select
               name="interest"
               required
@@ -910,19 +1095,20 @@ export default function Home() {
             </select>
           </label>
           <label>
-            Message
+            {isHindi ? 'Message' : 'Message'}
             <textarea name="message" rows={4} required />
           </label>
           <label className="consent">
             <input type="checkbox" required />
-            <span>I consent to being contacted about this enquiry.</span>
+            <span>{isHindi ? 'मैं इस enquiry के बारे में contact किए जाने की सहमति देता/देती हूं.' : 'I consent to being contacted about this enquiry.'}</span>
           </label>
-          <button type="submit">Request a Conversation</button>
+          <button type="submit">{isHindi ? 'Conversation Request करें' : 'Request a Conversation'}</button>
           {contactSubmitted ? (
             <p className="success-message">
               <CheckCircle2 size={18} aria-hidden="true" />
-              Thank you for contacting RBIL. Your question has been received by our team. We will
-              respond to the email address provided by you.
+              {isHindi
+                ? 'RBIL से संपर्क करने के लिए धन्यवाद. आपका question हमारी team को मिल गया है. हम आपके दिए गए email address पर जवाब देंगे.'
+                : 'Thank you for contacting RBIL. Your question has been received by our team. We will respond to the email address provided by you.'}
             </p>
           ) : null}
         </form>
@@ -938,35 +1124,37 @@ export default function Home() {
             />
             <span>
               <strong>Rashi Bhartiya Innovation LLP</strong>
-              <small>Innovation rooted in real human needs.</small>
+              <small>{isHindi ? 'Innovation rooted in real human needs.' : 'Innovation rooted in real human needs.'}</small>
             </span>
           </a>
           <p>
-            Registered address: Plot No. 1040/29, Flat No.-201, Gali No.-10, Krishna Colony,
+            {isHindi ? 'Registered address' : 'Registered address'}: Plot No. 1040/29, Flat No.-201, Gali No.-10, Krishna Colony,
             Gurugram -122001 Haryana.
           </p>
-          <p>Phone/WhatsApp: {founderPhone}</p>
+          <p>{isHindi ? 'Phone/WhatsApp' : 'Phone/WhatsApp'}: {founderPhone}</p>
           <p>
-            Suggestions:{' '}
+            {isHindi ? 'Suggestions' : 'Suggestions'}:{' '}
             <a href={`mailto:${rbilOfficialEmail}`}>{rbilOfficialEmail}</a>
           </p>
           <p className="muted">
-            Registration details, legal text, and social links should be added after company
-            approval.
+            {isHindi
+              ? 'Registration details, legal text और social links company approval के बाद add किए जाने चाहिए.'
+              : 'Registration details, legal text, and social links should be added after company approval.'}
           </p>
         </div>
         <div className="footer-links">
-          <a href="#products">Products</a>
-          <a href="#research">Research</a>
-          <a href="#contact">Contact</a>
+          <a href="#products">{isHindi ? 'Products' : 'Products'}</a>
+          <a href="#research">{isHindi ? 'Research' : 'Research'}</a>
+          <a href="#contact">{isHindi ? 'Contact' : 'Contact'}</a>
           <a href="#investors">Investor Relations</a>
-          <a href="#privacy">Privacy</a>
-          <a href="#terms">Terms</a>
-          <a href="#accessibility">Accessibility</a>
+          <a href="#privacy">{isHindi ? 'Privacy' : 'Privacy'}</a>
+          <a href="#terms">{isHindi ? 'Terms' : 'Terms'}</a>
+          <a href="#accessibility">{isHindi ? 'Accessibility' : 'Accessibility'}</a>
         </div>
         <p className="muted full">
-          Product availability and features may vary by region and development stage. Copyright
-          2026.
+          {isHindi
+            ? 'Product availability और features region तथा development stage के अनुसार बदल सकते हैं. Copyright 2026.'
+            : 'Product availability and features may vary by region and development stage. Copyright 2026.'}
         </p>
       </footer>
     </main>
@@ -975,17 +1163,24 @@ export default function Home() {
 
 function ProductDetailPage({
   product,
+  stories,
+  language,
+  onLanguageChange,
 }: {
-  product: (typeof productStories)[keyof typeof productStories];
+  product: ProductStory;
+  stories: Record<string, ProductStory>;
+  language: Language;
+  onLanguageChange: (language: Language) => void;
 }) {
-  const otherProducts = Object.entries(productStories).filter(([, item]) => item.name !== product.name);
+  const isHindi = language === 'hi';
+  const otherProducts = Object.entries(stories).filter(([, item]) => item.name !== product.name);
   const Icon = product.Icon;
 
   return (
     <main className={`product-detail-page ${product.accent}`}>
       <header className="product-detail-header">
         <a className="back-link" href="/">
-          Back to RBIL
+          {isHindi ? 'RBIL पर वापस जाएं' : 'Back to RBIL'}
         </a>
         <nav aria-label="Other RBIL products">
           {otherProducts.map(([slug, item]) => (
@@ -994,6 +1189,17 @@ function ProductDetailPage({
             </a>
           ))}
         </nav>
+        <label className="language product-language" aria-label="Language selector">
+          <Languages size={16} />
+          <select
+            value={language}
+            onChange={(event) => onLanguageChange(event.target.value as Language)}
+            aria-label="Select website language"
+          >
+            <option value="en">EN</option>
+            <option value="hi">हिन्दी</option>
+          </select>
+        </label>
       </header>
 
       <section className="product-detail-hero">
@@ -1003,23 +1209,27 @@ function ProductDetailPage({
           <p className="lead">{product.intro}</p>
           <div className="actions">
             <a className="button primary" href={product.url} target="_blank" rel="noopener noreferrer">
-              Visit Product <ExternalLink size={18} />
+              {isHindi ? 'Product देखें' : 'Visit Product'} <ExternalLink size={18} />
             </a>
             <a className="button secondary" href="#features">
-              Explore Features
+              {isHindi ? 'Features देखें' : 'Explore Features'}
             </a>
             <a className="button secondary" href="/#partnerships">
-              Partner With Us
+              {isHindi ? 'Partner With Us' : 'Partner With Us'}
             </a>
             <a className="button secondary" href="/#investors">
-              Investor Relations
+              {isHindi ? 'Investor Relations' : 'Investor Relations'}
             </a>
           </div>
         </div>
         <div className="product-story-card">
           <Icon size={40} aria-hidden="true" />
           <img src={product.image} alt={`${product.name} product preview`} />
-          <strong>The Problem - Why We Created It - Our Solution - Future Vision</strong>
+          <strong>
+            {isHindi
+              ? 'समस्या - हमने क्यों बनाया - हमारा समाधान - भविष्य की दृष्टि'
+              : 'The Problem - Why We Created It - Our Solution - Future Vision'}
+          </strong>
         </div>
       </section>
 
@@ -1035,41 +1245,42 @@ function ProductDetailPage({
 
       <section className="india-global-impact">
         <div>
-          <p className="eyebrow">Built in India. Designed for Wider Impact.</p>
-          <h2>{product.name} Starts With a Real Human Need</h2>
+          <p className="eyebrow">{isHindi ? 'भारत में निर्मित. व्यापक प्रभाव के लिए तैयार.' : 'Built in India. Designed for Wider Impact.'}</p>
+          <h2>{isHindi ? `${product.name} एक वास्तविक मानवीय जरूरत से शुरू होता है` : `${product.name} Starts With a Real Human Need`}</h2>
         </div>
         <div className="impact-columns">
           <article>
-            <h3>India Relevance</h3>
+            <h3>{isHindi ? 'भारत में प्रासंगिकता' : 'India Relevance'}</h3>
             <p>
-              RBIL is building from Indian realities: diverse languages, family structures,
-              education systems, accessibility needs, local businesses, budgets and everyday
-              adoption challenges.
+              {isHindi
+                ? 'RBIL भारतीय वास्तविकताओं से निर्माण कर रहा है: विविध languages, family structures, education systems, accessibility needs, local businesses, budgets और everyday adoption challenges.'
+                : 'RBIL is building from Indian realities: diverse languages, family structures, education systems, accessibility needs, local businesses, budgets and everyday adoption challenges.'}
             </p>
           </article>
           <article>
-            <h3>Wider Adaptability</h3>
+            <h3>{isHindi ? 'व्यापक अनुकूलन' : 'Wider Adaptability'}</h3>
             <p>
-              The underlying problem can also exist internationally. The platform may be adapted for
-              different countries, languages, cultures, education systems, food habits,
-              accessibility requirements and local-commerce ecosystems.
+              {isHindi
+                ? 'Underlying problem internationally भी मौजूद हो सकता है. Platform को different countries, languages, cultures, education systems, food habits, accessibility requirements और local-commerce ecosystems के अनुसार adapt किया जा सकता है.'
+                : 'The underlying problem can also exist internationally. The platform may be adapted for different countries, languages, cultures, education systems, food habits, accessibility requirements and local-commerce ecosystems.'}
             </p>
           </article>
         </div>
       </section>
 
       <section className="product-detail-cta">
-        <h2>Turn Curiosity Into a Conversation</h2>
+        <h2>{isHindi ? 'Curiosity को conversation में बदलें' : 'Turn Curiosity Into a Conversation'}</h2>
         <p>
-          RBIL welcomes thoughtful conversations with users, schools, public-sector teams,
-          institutions, local-business partners, strategic collaborators and screened investors.
+          {isHindi
+            ? 'RBIL users, schools, public-sector teams, institutions, local-business partners, strategic collaborators और screened investors के साथ meaningful conversations का स्वागत करता है.'
+            : 'RBIL welcomes thoughtful conversations with users, schools, public-sector teams, institutions, local-business partners, strategic collaborators and screened investors.'}
         </p>
         <div className="actions">
           <a className="button primary" href={product.url} target="_blank" rel="noopener noreferrer">
-            Visit Product <ExternalLink size={18} />
+            {isHindi ? 'Product देखें' : 'Visit Product'} <ExternalLink size={18} />
           </a>
           <a className="button secondary" href="/#contact">
-            Connect With RBIL
+            {isHindi ? 'RBIL से संपर्क करें' : 'Connect With RBIL'}
           </a>
           <a className="button secondary" href="/#investors">
             Investor Relations
