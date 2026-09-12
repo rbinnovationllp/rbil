@@ -15,11 +15,25 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'Rashi Bhartiya Innovation LLP | Human-Centred Digital Solutions',
   description:
-    'Discover EaseTalk, Syllabus Synk, MAMAAI and SabSewa Local: research-led digital solutions for accessible communication, education, family wellness and hyperlocal services.',
+    'Discover EaseTalk, Syllabus Synk, MAMAAI, SabSewa Local and MyLekhpAl: research-led digital solutions for accessibility, education, family wellness, hyperlocal commerce, AI accounting and personal finance.',
+  keywords: [
+    'Rashi Bhartiya Innovation LLP',
+    'MyLekhpAl',
+    'mylekhpal.com',
+    'AI accounting India',
+    'AI bookkeeping assistant',
+    'small business accounting',
+    'journal entry AI',
+    'AI personal finance',
+    'personal finance planning India',
+    'AI tax planning support',
+    'business accounting assistant',
+    'personal financial planning',
+  ],
   openGraph: {
     title: 'Rashi Bhartiya Innovation LLP',
     description:
-      'Innovation rooted in real human needs, with four practical digital solutions from India for the world.',
+      'Innovation rooted in real human needs, with five practical digital solutions from India for the world.',
     type: 'website',
   },
 };

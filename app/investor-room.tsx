@@ -113,6 +113,13 @@ const projects = [
     body: 'A hyperlocal marketplace designed to connect consumers with nearby local vendors while helping neighbourhood shopkeepers compete in the digital economy.',
     points: ['Local merchant digitisation', 'Order-based monetisation and vendor onboarding', 'Geographic scalability across Indian markets'],
   },
+  {
+    name: 'MyLekhpAl',
+    category: 'AI Accounting & Personal Finance',
+    icon: Calculator,
+    body: 'An AI-assisted financial platform combining business accounting support with personal finance and tax-planning guidance through two clearly separated service modules.',
+    points: ['Business accounting and journal-entry assistance', 'Personal finance and tax-support planning', 'Small business, professional and household finance opportunity'],
+  },
 ];
 
 const ranges = [
@@ -501,7 +508,7 @@ export default function InvestorRoom({ initialView, language = 'en' }: { initial
           <div>
             <p className="eyebrow">{isHindi ? 'Private access request' : 'Private access request'}</p>
             <h1>{isHindi ? 'Real-world problems के लिए AI solutions' : 'Building AI Solutions for Real-World Problems'}</h1>
-            <p className="lead">{isHindi ? 'चार platforms. चार बड़े markets. एक innovation company.' : 'Four platforms. Four major markets. One innovation company.'}</p>
+            <p className="lead">{isHindi ? 'पांच platforms. पांच बड़े markets. एक innovation company.' : 'Five platforms. Five major markets. One innovation company.'}</p>
             <div className="security-note">
               <LockKeyhole size={20} aria-hidden="true" />
               <span>
@@ -551,7 +558,7 @@ export default function InvestorRoom({ initialView, language = 'en' }: { initial
             </div>
             <fieldset>
               <legend>{isHindi ? 'Areas of interest' : 'Areas of interest'}</legend>
-              {['MAMAAI', 'EaseTalk', 'Syllabus Synk', 'SabSewa Local', 'Entire RBIL portfolio', 'Strategic partnership', 'Government / institutional partnership', 'Technology collaboration', 'International expansion'].map((item) => (
+              {['MAMAAI', 'EaseTalk', 'Syllabus Synk', 'SabSewa Local', 'MyLekhpAl', 'Entire RBIL portfolio', 'Strategic partnership', 'Government / institutional partnership', 'Technology collaboration', 'International expansion'].map((item) => (
                 <label className="check-row" key={item}><input type="checkbox" name="areas" value={item} />{item}</label>
               ))}
             </fieldset>
@@ -657,7 +664,7 @@ function InvestorDashboard({
       <div className="dashboard-hero">
         <p className="eyebrow">Welcome to the RBIL Private Investor Room</p>
         <h1>Building AI Solutions for Real-World Problems</h1>
-        <p>Four platforms. Four major markets. One innovation company.</p>
+        <p>Five platforms. Five major markets. One innovation company.</p>
         <div className="access-strip">
           <span>Investor: <strong>{investorName}</strong></span>
           <span>Investor ID: <strong>RBIL-INV-2026-DEMO</strong></span>
@@ -669,7 +676,7 @@ function InvestorDashboard({
       <div className="dashboard-cards">
         {[
           ['RBIL Overview', Building2],
-          ['Our Four Platforms', BriefcaseBusiness],
+          ['Our Five Platforms', BriefcaseBusiness],
           ['Market Opportunity', BarChart3],
           ['Business Model', CircleDollarSign],
           ['Financial Opportunity', Calculator],
@@ -688,8 +695,8 @@ function InvestorDashboard({
         <h2>Why RBIL Is Different</h2>
         <p>
           RBIL is developing a diversified AI technology portfolio rather than depending on one
-          product. The four platforms address family wellness, accessibility, education and local
-          commerce, feeding into one innovation company.
+          product. The five platforms address family wellness, accessibility, education, local
+          commerce, and AI accounting and personal finance, feeding into one innovation company.
         </p>
         <div className="portfolio-map">
           {projects.map((project) => <span key={project.name}>{project.name}<small>{project.category}</small></span>)}
@@ -698,7 +705,7 @@ function InvestorDashboard({
       </section>
 
       <section className="investor-section">
-        <h2>Four Project Investment Presentation</h2>
+        <h2>Five Project Investment Presentation</h2>
         <div className="project-investor-grid">
           {projects.map(({ name, category, icon: Icon, body, points }) => (
             <article key={name}>

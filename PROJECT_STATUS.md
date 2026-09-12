@@ -48,7 +48,7 @@ npm run dev
 - Added registered address:
 
 ```text
-Plot No. 1040/29, Flat No.-201, Gali No.-10, Krishna Colony, Gurugram -122001 Haryana
+Plot No. 1040/29, Flat No.-201, Gali No.-10, Krishna Colony, Gurugram -122001 Haryana, India
 ```
 
 - Added four product cards:
@@ -212,6 +212,17 @@ Frontend files:
 
 - `app/page.tsx`
 - `app/globals.css`
+- `public/visitor-counter-config.json`
+
+Latest production investigation on September 4, 2026:
+
+- The live `https://www.rbil.in/` page loads through CloudFront.
+- The live JavaScript bundle contains visitor-counter code, but it does not contain any real API Gateway endpoint such as `execute-api.../prod/visit`.
+- Therefore the frontend has no production counter API to call and shows the fallback counter unavailable/configuration message.
+- Root cause: `VITE_VISITOR_COUNTER_ENDPOINT` is missing from the deployed Amplify build environment, or the visitor-counter backend has not been deployed and connected yet.
+- Code improvement added: the frontend now first reads `VITE_VISITOR_COUNTER_ENDPOINT`, then falls back to `/visitor-counter-config.json`.
+- This allows production to be fixed either by setting the Amplify environment variable and rebuilding, or by publishing `visitor-counter-config.json` with the real endpoint.
+- AWS CLI and SAM CLI are not installed in this local environment, and the AWS Console requires sign-in, so live AWS deployment/configuration could not be completed from this session without AWS access.
 
 Backend files:
 
@@ -244,6 +255,22 @@ VITE_VISITOR_COUNTER_ENDPOINT=https://your-api-id.execute-api.your-region.amazon
 
 Then redeploy the Amplify production branch.
 
+Alternative runtime configuration:
+
+If a rebuild is inconvenient, set the same endpoint in:
+
+```text
+public/visitor-counter-config.json
+```
+
+using this shape before deployment:
+
+```json
+{
+  "endpoint": "https://your-api-id.execute-api.your-region.amazonaws.com/prod/visit"
+}
+```
+
 Production verification:
 
 - Open the production landing page and note the displayed counter value.
@@ -259,6 +286,25 @@ Partnership links verified in built page source:
 - Research and Technology Collaboration: internal Contact section with selected enquiry category
 - Incubation, Grants, and Investment Discussions: internal Contact section with selected enquiry category
 - Vendor and Local Ecosystem Partnerships: `https://www.sabsewa.in/partner`
+
+## Mobile Hero Improvement
+
+- Improved the mobile homepage hero for the headline:
+
+```text
+Transforming Everyday Challenges into Meaningful Digital Solutions
+```
+
+- Added mobile-only CSS under the `max-width: 720px` breakpoint so the desktop hero design remains preserved.
+- Reduced and capped the mobile hero headline size to avoid one-word-per-line wrapping.
+- Added `text-wrap: balance` and a controlled headline measure so the headline forms more natural mobile lines.
+- Improved mobile hierarchy for the eyebrow, headline, supporting paragraph, CTA buttons, visitor counter, and ecosystem visual.
+- Tightened mobile header spacing and made the language selector and `Explore Solutions` CTA fit better on narrow screens.
+- Added a 360px-and-below refinement for very small Android devices.
+- Verified `npm run build:amplify` succeeds after the change.
+- Rendered the built `dist-amplify` output locally and confirmed the homepage loads successfully.
+- Prepared `scripts/check-mobile-hero.mjs` for automated mobile viewport checks at `320`, `360`, `375`, `390`, and `430` widths when a Chromium debugging port is available.
+- Local Chrome/Edge headless viewport automation could not complete on this machine because the installed browsers exited with GPU process errors, but the production build and rendered static preview were successful.
 
 ## Remaining Before Public Launch
 

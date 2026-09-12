@@ -421,6 +421,10 @@ form,
   border-top: 7px solid var(--green);
 }
 
+.amber {
+  border-top: 7px solid var(--saffron);
+}
+
 .principles,
 .product-grid,
 .impact-grid,
@@ -594,7 +598,7 @@ footer p {
 }
 
 .product-grid {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .product-card {
@@ -1914,6 +1918,8 @@ footer small {
   .site-header {
     align-items: flex-start;
     flex-direction: column;
+    gap: 14px;
+    padding: 14px 18px 16px;
   }
 
   .header-actions,
@@ -1921,9 +1927,78 @@ footer small {
     width: 100%;
   }
 
+  .header-actions {
+    display: grid;
+    grid-template-columns: minmax(138px, 0.92fr) minmax(0, 1.08fr);
+    gap: 10px;
+  }
+
   .language-switcher,
   .header-cta {
-    flex: 1;
+    min-height: 44px;
+  }
+
+  .language-switcher {
+    padding: 0 6px;
+  }
+
+  .language-switcher button {
+    min-width: 40px;
+    min-height: 32px;
+  }
+
+  .header-cta {
+    padding: 0 12px;
+    font-size: clamp(0.9rem, 4vw, 1rem);
+    line-height: 1.1;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .hero {
+    gap: 24px;
+    padding: 32px 18px 26px;
+    background:
+      radial-gradient(circle at 84% 10%, rgb(216 117 20 / 16%), transparent 34%),
+      linear-gradient(145deg, rgb(23 54 93 / 9%), rgb(255 253 248) 42%, rgb(39 131 95 / 10%)),
+      var(--paper);
+  }
+
+  .hero-copy {
+    max-width: 100%;
+  }
+
+  .hero .eyebrow {
+    max-width: 32ch;
+    margin-bottom: 12px;
+    font-size: clamp(0.68rem, 3.1vw, 0.76rem);
+    line-height: 1.45;
+  }
+
+  .hero h1 {
+    max-width: 15.5ch;
+    margin-bottom: 16px;
+    font-size: clamp(2.05rem, 10vw, 2.85rem);
+    line-height: 1.04;
+    text-wrap: balance;
+  }
+
+  .hero .lead {
+    max-width: 35rem;
+    margin-bottom: 18px;
+    font-size: clamp(1rem, 4.4vw, 1.12rem);
+    line-height: 1.7;
+  }
+
+  .actions {
+    gap: 10px;
+  }
+
+  .actions .button {
+    width: 100%;
+    min-height: 46px;
+    padding: 0 14px;
+    text-align: center;
   }
 
   .hero-visual,
@@ -1964,8 +2039,26 @@ footer small {
     min-height: 340px;
   }
 
+  .hero-visual {
+    gap: 10px;
+    padding: 14px;
+    border-radius: 8px;
+    background: rgb(255 255 255 / 76%);
+    box-shadow: 0 14px 38px rgb(21 33 50 / 10%);
+  }
+
   .visual-core {
-    min-height: 122px;
+    min-height: 96px;
+  }
+
+  .solution-node {
+    min-height: 82px;
+    padding: 14px;
+  }
+
+  .visitor-counter,
+  .stamp {
+    margin-top: 14px;
   }
 
   .explore-rbil {
@@ -2006,6 +2099,38 @@ footer small {
   }
 
   h1 {
-    font-size: clamp(2.2rem, 14vw, 3.6rem);
+    font-size: clamp(2.1rem, 11vw, 3.2rem);
+  }
+}
+
+@media (max-width: 360px) {
+  .site-header {
+    padding-inline: 16px;
+  }
+
+  .brand-logo {
+    width: 48px;
+    height: 48px;
+  }
+
+  .brand {
+    gap: 10px;
+  }
+
+  .header-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    padding: 28px 16px 24px;
+  }
+
+  .hero h1 {
+    max-width: 16ch;
+    font-size: clamp(1.92rem, 9.8vw, 2.22rem);
+  }
+
+  .hero .lead {
+    font-size: 0.98rem;
   }
 }
