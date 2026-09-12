@@ -792,7 +792,13 @@ export default function Home() {
             <article className={`solution-node ${accent}`} key={name}>
               <Icon size={24} aria-hidden="true" />
               <span>{category}</span>
-              <strong>{name}</strong>
+              <strong
+                className={name === 'MyLekhpAl' ? 'mylekhpal-wordmark' : undefined}
+                aria-label={name === 'MyLekhpAl' ? 'MyLekhpAl' : undefined}
+                title={name === 'MyLekhpAl' ? 'MyLekhpAl' : undefined}
+              >
+                {name}
+              </strong>
             </article>
           ))}
         </div>

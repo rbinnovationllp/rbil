@@ -405,6 +405,11 @@ form,
   font-size: 1.25rem;
 }
 
+/* The final character in MyLekhpAl is a lowercase "l", not an uppercase "I". */
+.solution-node .mylekhpal-wordmark {
+  font-family: "Palatino Linotype", Georgia, serif;
+}
+
 .teal {
   border-top: 7px solid var(--teal);
 }
