@@ -114,7 +114,7 @@ const projects = [
     points: ['Local merchant digitisation', 'Order-based monetisation and vendor onboarding', 'Geographic scalability across Indian markets'],
   },
   {
-    name: 'MyLekhpAl',
+    name: 'MyLekhpal',
     category: 'AI Accounting & Personal Finance',
     icon: Calculator,
     body: 'An AI-assisted financial platform combining business accounting support with personal finance and tax-planning guidance through two clearly separated service modules.',
@@ -558,7 +558,7 @@ export default function InvestorRoom({ initialView, language = 'en' }: { initial
             </div>
             <fieldset>
               <legend>{isHindi ? 'Areas of interest' : 'Areas of interest'}</legend>
-              {['MAMAAI', 'EaseTalk', 'Syllabus Synk', 'SabSewa Local', 'MyLekhpAl', 'Entire RBIL portfolio', 'Strategic partnership', 'Government / institutional partnership', 'Technology collaboration', 'International expansion'].map((item) => (
+              {['MAMAAI', 'EaseTalk', 'Syllabus Synk', 'SabSewa Local', 'MyLekhpal', 'Entire RBIL portfolio', 'Strategic partnership', 'Government / institutional partnership', 'Technology collaboration', 'International expansion'].map((item) => (
                 <label className="check-row" key={item}><input type="checkbox" name="areas" value={item} />{item}</label>
               ))}
             </fieldset>

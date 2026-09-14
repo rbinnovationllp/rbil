@@ -15,10 +15,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'Rashi Bhartiya Innovation LLP | Human-Centred Digital Solutions',
   description:
-    'Discover EaseTalk, Syllabus Synk, MAMAAI, SabSewa Local and MyLekhpAl: research-led digital solutions for accessibility, education, family wellness, hyperlocal commerce, AI accounting and personal finance.',
+    'Discover EaseTalk, Syllabus Synk, MAMAAI, SabSewa Local and MyLekhpal: research-led digital solutions for accessibility, education, family wellness, hyperlocal commerce, AI accounting and personal finance.',
   keywords: [
     'Rashi Bhartiya Innovation LLP',
-    'MyLekhpAl',
+    'MyLekhpal',
     'mylekhpal.com',
     'AI accounting India',
     'AI bookkeeping assistant',

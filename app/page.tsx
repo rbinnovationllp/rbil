@@ -111,7 +111,7 @@ const products = [
   },
   {
     id: 'mylekhpal',
-    name: 'MyLekhpAl',
+    name: 'MyLekhpal',
     category: 'AI Accounting & Personal Finance',
     hook:
       'From business books to personal finances — let AI help keep every rupee accounted for.',
@@ -122,7 +122,7 @@ const products = [
     url: 'https://mylekhpal.com',
     image: '/thumbnail-mylekhpal.png',
     imageAlt:
-      'MyLekhpAl AI-powered accounting and personal finance platform thumbnail',
+      'MyLekhpal AI-powered accounting and personal finance platform thumbnail',
     hackathon: null,
     accent: 'amber',
     Icon: Calculator,
@@ -211,26 +211,26 @@ const productStories: Record<string, ProductStory> = {
     ],
   },
   mylekhpal: {
-    name: 'MyLekhpAl',
+    name: 'MyLekhpal',
     category: 'AI Accounting & Personal Finance Platform',
     url: 'https://mylekhpal.com',
     image: '/thumbnail-mylekhpal.png',
     Icon: Calculator,
     accent: 'amber',
     intro:
-      'MyLekhpAl is being developed by Rashi Bhartiya Innovation LLP as an AI-assisted financial platform intended to make accounting and personal financial planning easier to understand and manage.',
+      'MyLekhpal is being developed by Rashi Bhartiya Innovation LLP as an AI-assisted financial platform intended to make accounting and personal financial planning easier to understand and manage.',
     sections: [
-      ['What MyLekhpAl Is', 'MyLekhpAl combines business accounting assistance with personal finance and tax-planning support through two clearly separated intelligent service modules. It is designed for users who want guided help understanding transactions, financial organisation, budgeting and planning.'],
-      ['Why We Created MyLekhpAl', 'Accounting and personal finance affect almost every individual and business, yet many people without professional financial training find journal entries, financial organisation, budgeting, saving and tax planning difficult to understand.'],
+      ['What MyLekhpal Is', 'MyLekhpal combines business accounting assistance with personal finance and tax-planning support through two clearly separated intelligent service modules. It is designed for users who want guided help understanding transactions, financial organisation, budgeting and planning.'],
+      ['Why We Created MyLekhpal', 'Accounting and personal finance affect almost every individual and business, yet many people without professional financial training find journal entries, financial organisation, budgeting, saving and tax planning difficult to understand.'],
       ['Business Accounting', 'The business accounting section is designed for small businesses, entrepreneurs, professionals, startups and growing enterprises. It may assist with journal entry preparation, debit and credit identification, transaction classification, accounting treatment explanations, ledger-oriented assistance, narration preparation, financial-record organisation, transaction review and structured bookkeeping support.'],
       ['Protected Accounting Skill', 'The accounting workflow is powered by the specialised my-journal-entry-preparation.skill. This accounting capability remains independent and protected; personal-finance functionality must not overwrite, weaken or change its behaviour.'],
       ['Personal Finance & Tax Planning', 'The personal finance service is intended for individuals and families who want clearer understanding of income, expenses, budgets, monthly cash flow, savings, goals, emergency funds, financial health and tax-support guidance.'],
       ['Dedicated Personal Finance Service', 'This service uses the specialised mylekhpal-personal-finance-service.skill. It complements the business accounting service while staying logically separate from accounting workflows.'],
-      ['Who Can Use It', 'MyLekhpAl can serve small businesses, shop owners, startups, entrepreneurs, self-employed professionals, salaried individuals, families, retired persons and people planning savings or financial goals.'],
+      ['Who Can Use It', 'MyLekhpal can serve small businesses, shop owners, startups, entrepreneurs, self-employed professionals, salaried individuals, families, retired persons and people planning savings or financial goals.'],
       ['How AI Assists Users', 'AI can help explain financial terminology in simpler language, suggest structured ways to record transactions, organise information, analyse income and expenses, guide planning conversations and help users prepare better questions before consulting qualified professionals.'],
-      ['One Platform - Two Financial Needs', 'For business, MyLekhpAl helps users understand and organise accounting transactions. For personal life, it helps users understand, organise and plan personal finances while keeping both workflows clearly separated.'],
+      ['One Platform - Two Financial Needs', 'For business, MyLekhpal helps users understand and organise accounting transactions. For personal life, it helps users understand, organise and plan personal finances while keeping both workflows clearly separated.'],
       ['Social and Business Benefit', 'The platform aims to make financial understanding more accessible so individuals and small businesses can become better organised, better informed and better prepared before seeking professional assistance where required.'],
-      ['Disclaimer', 'MyLekhpAl is an AI-assisted information, organisation and planning platform. Information generated by the platform should not be considered a substitute for professional accounting, tax, legal, investment or financial advice. Users should consult a qualified Chartered Accountant, tax professional, financial adviser or other appropriate licensed professional before making important financial, tax, investment or legal decisions.'],
+      ['Disclaimer', 'MyLekhpal is an AI-assisted information, organisation and planning platform. Information generated by the platform should not be considered a substitute for professional accounting, tax, legal, investment or financial advice. Users should consult a qualified Chartered Accountant, tax professional, financial adviser or other appropriate licensed professional before making important financial, tax, investment or legal decisions.'],
     ],
   },
 };
@@ -300,19 +300,19 @@ const productStoriesHi: Record<string, ProductStory> = {
     ...productStories.mylekhpal,
     category: 'AI आधारित लेखांकन और व्यक्तिगत वित्तीय योजना मंच',
     intro:
-      'MyLekhpAl एक AI-सहायित मंच है जो व्यवसायिक लेखांकन तथा व्यक्तिगत वित्तीय और कर-योजना सहायता को एक ही प्लेटफॉर्म पर दो अलग-अलग सेवाओं के रूप में उपलब्ध कराने के उद्देश्य से विकसित किया जा रहा है।',
+      'MyLekhpal एक AI-सहायित मंच है जो व्यवसायिक लेखांकन तथा व्यक्तिगत वित्तीय और कर-योजना सहायता को एक ही प्लेटफॉर्म पर दो अलग-अलग सेवाओं के रूप में उपलब्ध कराने के उद्देश्य से विकसित किया जा रहा है।',
     sections: [
-      ['MyLekhpAl क्या है', 'MyLekhpAl business accounting assistance और personal finance तथा tax-planning support को दो अलग-अलग intelligent service modules के रूप में जोड़ता है। यह उन users के लिए बनाया जा रहा है जिन्हें transactions, financial organisation, budgeting और planning को समझने में guided help चाहिए।'],
-      ['हमने MyLekhpAl क्यों बनाया', 'Accounting और personal finance लगभग हर individual और business को प्रभावित करते हैं, लेकिन professional financial training न रखने वाले लोगों के लिए journal entries, financial organisation, budgeting, savings और tax planning समझना कठिन हो सकता है।'],
+      ['MyLekhpal क्या है', 'MyLekhpal business accounting assistance और personal finance तथा tax-planning support को दो अलग-अलग intelligent service modules के रूप में जोड़ता है। यह उन users के लिए बनाया जा रहा है जिन्हें transactions, financial organisation, budgeting और planning को समझने में guided help चाहिए।'],
+      ['हमने MyLekhpal क्यों बनाया', 'Accounting और personal finance लगभग हर individual और business को प्रभावित करते हैं, लेकिन professional financial training न रखने वाले लोगों के लिए journal entries, financial organisation, budgeting, savings और tax planning समझना कठिन हो सकता है।'],
       ['व्यवसायिक लेखांकन', 'यह section small businesses, entrepreneurs, professionals, startups और growing enterprises के लिए बनाया गया है। यह journal entry तैयार करने, debit और credit पहचानने, transaction classification, accounting treatment समझने, ledger-oriented assistance, narration preparation, financial records organisation, transaction review और structured bookkeeping support में मदद कर सकता है।'],
       ['Protected Accounting Skill', 'Accounting workflow specialised my-journal-entry-preparation.skill से powered है। यह accounting capability independent और protected रहती है; personal-finance functionality इसके behaviour को overwrite, weaken या change नहीं करेगी।'],
       ['व्यक्तिगत वित्त और कर योजना', 'Personal finance service individuals और families को income, expenses, budgets, monthly cash flow, savings, goals, emergency funds, financial health और tax-support guidance को बेहतर ढंग से समझने में मदद करने के लिए है।'],
       ['Dedicated Personal Finance Service', 'यह service specialised mylekhpal-personal-finance-service.skill का उपयोग करती है। यह business accounting service को complement करती है, लेकिन accounting workflows से logically separate रहती है।'],
-      ['कौन उपयोग कर सकता है', 'MyLekhpAl small businesses, shop owners, startups, entrepreneurs, self-employed professionals, salaried individuals, families, retired persons और savings या financial goals planning करने वाले लोगों के लिए उपयोगी हो सकता है।'],
+      ['कौन उपयोग कर सकता है', 'MyLekhpal small businesses, shop owners, startups, entrepreneurs, self-employed professionals, salaried individuals, families, retired persons और savings या financial goals planning करने वाले लोगों के लिए उपयोगी हो सकता है।'],
       ['AI कैसे सहायता करता है', 'AI financial terminology को सरल भाषा में समझाने, transactions record करने के structured तरीके सुझाने, information organise करने, income और expenses analyse करने, planning conversations guide करने और qualified professionals से सलाह लेने से पहले users को better prepared बनाने में मदद कर सकता है।'],
-      ['One Platform - Two Financial Needs', 'Business के लिए MyLekhpAl accounting transactions को समझने और organise करने में मदद करता है। Personal life के लिए यह personal finances को समझने, organise करने और plan करने में मदद करता है, जबकि दोनों workflows clear separation में रहते हैं।'],
+      ['One Platform - Two Financial Needs', 'Business के लिए MyLekhpal accounting transactions को समझने और organise करने में मदद करता है। Personal life के लिए यह personal finances को समझने, organise करने और plan करने में मदद करता है, जबकि दोनों workflows clear separation में रहते हैं।'],
       ['सामाजिक और व्यवसायिक लाभ', 'Platform का उद्देश्य financial understanding को अधिक accessible बनाना है, ताकि individuals और small businesses बेहतर organised, better informed और professional assistance लेने से पहले better prepared हो सकें।'],
-      ['Disclaimer', 'MyLekhpAl एक AI-assisted information, organisation और planning platform है। Platform से generated information professional accounting, tax, legal, investment या financial advice का substitute नहीं है। Important financial, tax, investment या legal decisions लेने से पहले users को qualified Chartered Accountant, tax professional, financial adviser या appropriate licensed professional से सलाह लेनी चाहिए।'],
+      ['Disclaimer', 'MyLekhpal एक AI-assisted information, organisation और planning platform है। Platform से generated information professional accounting, tax, legal, investment या financial advice का substitute नहीं है। Important financial, tax, investment या legal decisions लेने से पहले users को qualified Chartered Accountant, tax professional, financial adviser या appropriate licensed professional से सलाह लेनी चाहिए।'],
     ],
   },
 };
@@ -793,9 +793,9 @@ export default function Home() {
               <Icon size={24} aria-hidden="true" />
               <span>{category}</span>
               <strong
-                className={name === 'MyLekhpAl' ? 'mylekhpal-wordmark' : undefined}
-                aria-label={name === 'MyLekhpAl' ? 'MyLekhpAl' : undefined}
-                title={name === 'MyLekhpAl' ? 'MyLekhpAl' : undefined}
+                className={name === 'MyLekhpal' ? 'mylekhpal-wordmark' : undefined}
+                aria-label={name === 'MyLekhpal' ? 'MyLekhpal' : undefined}
+                title={name === 'MyLekhpal' ? 'MyLekhpal' : undefined}
               >
                 {name}
               </strong>
@@ -1209,7 +1209,7 @@ export default function Home() {
               <option>Syllabus Synk</option>
               <option>MAMAAI</option>
               <option>SabSewa Local</option>
-              <option>MyLekhpAl</option>
+              <option>MyLekhpal</option>
               <option>Government Pilot</option>
               <option>Partnership</option>
               <option>Government and Public-Sector Pilots</option>
@@ -1332,10 +1332,10 @@ function ProductDetailPage({
           <p className="lead">{product.intro}</p>
           <div className="actions">
             <a className="button primary" href={product.url} target="_blank" rel="noopener noreferrer">
-              {product.name === 'MyLekhpAl'
+              {product.name === 'MyLekhpal'
                 ? isHindi
-                  ? 'MyLekhpAl देखें'
-                  : 'Visit MyLekhpAl'
+                  ? 'MyLekhpal देखें'
+                  : 'Visit MyLekhpal'
                 : isHindi
                   ? 'Product देखें'
                   : 'Visit Product'}{' '}
@@ -1357,8 +1357,8 @@ function ProductDetailPage({
           <img
             src={product.image}
             alt={
-              product.name === 'MyLekhpAl'
-                ? 'MyLekhpAl AI-powered accounting and personal finance platform'
+              product.name === 'MyLekhpal'
+                ? 'MyLekhpal AI-powered accounting and personal finance platform'
                 : `${product.name} product preview`
             }
             onError={handleImageFallback}
@@ -1415,10 +1415,10 @@ function ProductDetailPage({
         </p>
         <div className="actions">
           <a className="button primary" href={product.url} target="_blank" rel="noopener noreferrer">
-            {product.name === 'MyLekhpAl'
+            {product.name === 'MyLekhpal'
               ? isHindi
-                ? 'MyLekhpAl देखें'
-                : 'Visit MyLekhpAl'
+                ? 'MyLekhpal देखें'
+                : 'Visit MyLekhpal'
               : isHindi
                 ? 'Product देखें'
                 : 'Visit Product'}{' '}
