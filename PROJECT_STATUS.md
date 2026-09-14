@@ -326,3 +326,6 @@ Transforming Everyday Challenges into Meaningful Digital Solutions
 ## Current Recommendation
 
 Use `C:\Users\HP\rbil` as the only active project folder going forward. Avoid editing the older nested folder after the copy, so changes do not get split across two locations.
+
+
+

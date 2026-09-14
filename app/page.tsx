@@ -1435,3 +1435,7 @@ function ProductDetailPage({
     </main>
   );
 }
+
+
+
+
