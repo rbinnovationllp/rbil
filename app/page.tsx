@@ -38,6 +38,39 @@ type ProductStory = {
   sections: readonly (readonly [string, string])[];
 };
 
+const easeTalkKeyFeatures = [
+  {
+    title: 'Speech to Text',
+    text: 'Spoken words become readable text, helping users follow conversations visually.',
+    Icon: MessageSquareText,
+  },
+  {
+    title: 'Text to Voice',
+    text: 'Typed messages or selected phrases can be spoken aloud to support everyday communication.',
+    Icon: Sparkles,
+  },
+  {
+    title: 'Live Captions',
+    text: 'Spoken conversations can be displayed as readable captions.',
+    Icon: CheckCircle2,
+  },
+  {
+    title: 'Quick Phrases',
+    text: 'Frequently used messages can be saved and accessed quickly when needed.',
+    Icon: MessageSquareText,
+  },
+  {
+    title: 'Multilingual Communication',
+    text: 'Supports English, हिन्दी and ಕನ್ನಡ for more accessible communication.',
+    Icon: Languages,
+  },
+  {
+    title: 'Name Alert - Android',
+    text: 'A configured name or nickname can trigger vibration and a visible alert on supported Android devices. Availability depends on device permissions and Android configuration.',
+    Icon: ShieldCheck,
+  },
+] as const;
+
 const products = [
   {
     id: 'easetalk',
@@ -45,7 +78,7 @@ const products = [
     category: 'Assistive communication',
     hook: 'Communication should be accessible to everyone.',
     description:
-      'An AI-enabled communication and sound-awareness solution designed to support deaf and hard-of-hearing users, people with speech-related needs, and senior citizens.',
+      'An assistive communication application combining speech-to-text, text-to-speech, live captions, quick communication phrases and multilingual assistance.',
     users: 'Individuals, families, senior citizens, institutions',
     url: 'https://easetalk.in',
     image: '/thumbnail-easetalk.png',
@@ -158,16 +191,16 @@ const productStories: Record<string, ProductStory> = {
     Icon: MessageSquareText,
     accent: 'teal',
     intro:
-      'EaseTalk is being developed to support people who face hearing, speech or communication barriers through practical assistive communication tools.',
+      'EaseTalk is an assistive communication application developed by Rashi Bhartiya Innovation LLP to help people who experience hearing, speech or communication barriers. It brings together speech-to-text, text-to-speech, live captions, quick communication phrases and multilingual assistance to make everyday communication more accessible.',
     sections: [
       ['The Problem', 'Many people, including deaf and hard-of-hearing users, people with speech-related needs and senior citizens, face daily communication barriers in homes, public spaces, institutions and services.'],
       ['Why We Created It', 'RBIL sees accessibility as a human need, not a luxury. EaseTalk is intended to make communication more inclusive, understandable and responsive in ordinary daily situations.'],
-      ['Our Solution', 'The platform brings together assistive communication capabilities such as speech-to-text, text-to-speech, live captions and environmental sound alerts.'],
-      ['How It Works', 'Users may use captions to understand spoken communication, text-to-speech to express messages, and alerts to notice important sounds in their surroundings.'],
-      ['Who Benefits', 'Individuals with hearing or speech challenges, senior citizens, families, schools, healthcare environments, public service providers and accessibility-focused institutions may benefit.'],
-      ['Impact in India', 'India needs affordable assistive tools across languages, communities and income groups. EaseTalk can support inclusion in homes, education, healthcare and public-facing services.'],
-      ['Global Potential', 'Communication barriers exist internationally. The platform concept can be adapted for different languages, accessibility regulations, care environments and institutional workflows.'],
-      ['Future Vision', 'EaseTalk can evolve into a broader accessibility ecosystem serving consumers, institutions, governments and healthcare/community partners.'],
+      ['Our Solution', 'EaseTalk brings speech-to-text, text-to-speech, live captions, quick phrases, multilingual communication and visual communication cards together in one assistive application.'],
+      ['How It Works', 'Users can follow spoken communication through readable captions, type or select phrases for spoken output, save frequently used messages, and use visual communication cards. Android Name Alert capabilities depend on device permissions and configuration.'],
+      ['Who Benefits', 'People who experience hearing or speech-related communication barriers, people who benefit from readable captions, senior citizens, families, caregivers, institutions and accessibility organisations may benefit.'],
+      ['Impact in India', 'EaseTalk is being developed to reduce everyday communication barriers by making speech, text, captions, quick phrases and accessibility assistance easier to use within one platform.'],
+      ['Global Potential', 'The underlying communication approach can be extended to additional languages and regions as EaseTalk develops.'],
+      ['Future Vision', 'EaseTalk can continue developing as an accessible communication platform for individuals, families, institutions and community partners.'],
     ],
   },
   'syllabus-synk': {
@@ -254,16 +287,16 @@ const productStoriesHi: Record<string, ProductStory> = {
   easetalk: {
     ...productStories.easetalk,
     intro:
-      'EaseTalk hearing, speech और communication barriers का सामना करने वाले लोगों को practical assistive communication tools से support करने के लिए विकसित किया जा रहा है।',
+      'EaseTalk एक सहायक संचार (Assistive Communication) एप्लिकेशन है, जिसे Rashi Bhartiya Innovation LLP ने उन लोगों की सहायता के लिए विकसित किया है जिन्हें सुनने, बोलने या दैनिक संवाद में कठिनाई होती है। इसमें बोली को लिखित शब्दों में बदलने (Speech-to-Text), लिखे हुए संदेश को आवाज़ में बदलने (Text-to-Speech), Live Captions, Quick Phrases और बहुभाषी सहायता जैसी सुविधाएँ एक ही प्लेटफ़ॉर्म पर उपलब्ध कराई जाती हैं।',
     sections: [
       ['समस्या', 'कई लोग, जिनमें deaf और hard-of-hearing users, speech-related needs वाले व्यक्ति और senior citizens शामिल हैं, घर, public spaces, institutions और services में daily communication barriers का सामना करते हैं।'],
       ['हमने इसे क्यों बनाया', 'RBIL accessibility को luxury नहीं बल्कि human need मानता है। EaseTalk का उद्देश्य communication को ordinary daily situations में अधिक inclusive और understandable बनाना है।'],
-      ['हमारा समाधान', 'Platform speech-to-text, text-to-speech, live captions और environmental sound alerts जैसी assistive communication capabilities को साथ लाता है।'],
-      ['यह कैसे काम करता है', 'Users spoken communication समझने के लिए captions, अपने संदेश व्यक्त करने के लिए text-to-speech, और surrounding sounds पहचानने के लिए alerts का उपयोग कर सकते हैं।'],
-      ['किसे लाभ होगा', 'Hearing या speech challenges वाले individuals, senior citizens, families, schools, healthcare spaces, public service providers और accessibility-focused institutions को लाभ हो सकता है।'],
-      ['भारत में प्रभाव', 'भारत को भाषाओं, communities और income groups के हिसाब से affordable assistive tools की जरूरत है। EaseTalk homes, education, healthcare और public-facing services में inclusion को support कर सकता है।'],
-      ['वैश्विक संभावना', 'Communication barriers internationally भी मौजूद हैं। Platform concept को different languages, accessibility regulations, care environments और institutional workflows के अनुसार adapt किया जा सकता है।'],
-      ['भविष्य की दृष्टि', 'EaseTalk consumers, institutions, governments और healthcare/community partners के लिए broader accessibility ecosystem बन सकता है।'],
+      ['हमारा समाधान', 'EaseTalk speech-to-text, text-to-speech, live captions, quick phrases, multilingual communication और visual communication cards को एक assistive application में साथ लाता है।'],
+      ['यह कैसे काम करता है', 'Users captions के माध्यम से spoken communication को पढ़ सकते हैं, typed या selected phrases को आवाज़ में बदल सकते हैं, frequently used messages save कर सकते हैं और visual communication cards का उपयोग कर सकते हैं। Android Name Alert की उपलब्धता device permissions और configuration पर निर्भर करती है।'],
+      ['किसे लाभ होगा', 'Hearing या speech-related communication barriers वाले लोग, readable captions से लाभ पाने वाले users, senior citizens, families, caregivers, institutions और accessibility organisations इससे लाभ उठा सकते हैं।'],
+      ['भारत में प्रभाव', 'EaseTalk speech, text, captions, quick phrases और accessibility assistance को एक platform में आसान बनाकर रोज़मर्रा की communication barriers कम करने के लिए विकसित किया जा रहा है।'],
+      ['वैश्विक संभावना', 'EaseTalk विकसित होने के साथ इस communication approach को अतिरिक्त भाषाओं और क्षेत्रों तक बढ़ाया जा सकता है।'],
+      ['भविष्य की दृष्टि', 'EaseTalk individuals, families, institutions और community partners के लिए एक accessible communication platform के रूप में विकसित होता रह सकता है।'],
     ],
   },
   'syllabus-synk': {
@@ -388,7 +421,7 @@ const hiProducts = {
     category: 'सहायक संचार',
     hook: 'संचार हर व्यक्ति के लिए सुलभ होना चाहिए।',
     description:
-      'Hearing, speech और communication needs वाले users, senior citizens और institutions के लिए AI-enabled communication और sound-awareness solution.',
+      'Speech-to-text, text-to-speech, live captions, quick phrases और multilingual assistance वाला assistive communication application.',
     users: 'Individuals, families, senior citizens, institutions',
   },
   'syllabus-synk': {
@@ -1085,7 +1118,7 @@ export default function Home() {
             <UsersRound size={36} aria-hidden="true" />
           </div>
           <div>
-            <p className="eyebrow">{isHindi ? 'Founder Profile' : 'Founder&apos;s Profile'}</p>
+            <p className="eyebrow">{isHindi ? 'Founder Profile' : "Founder's Profile"}</p>
             <h2>Rajesh Kumar Khare</h2>
             <p className="founder-role">{isHindi ? 'Founder और Director, Rashi Bhartiya Innovation LLP' : 'Founder and Director, Rashi Bhartiya Innovation LLP'}</p>
             <p>
@@ -1096,14 +1129,14 @@ export default function Home() {
             <p>
               {isHindi
                 ? '64 वर्ष की आयु में उन्होंने Artificial Intelligence की transformative potential को explore और समझना शुरू किया. 66 वर्ष की आयु तक उन्होंने लोगों की everyday problems के लिए practical, affordable और AI-powered application solutions विकसित करना शुरू किया.'
-                : 'At the age of 64, he began exploring and understanding the transformative potential of Artificial Intelligence. By the age of 66, he started developing practical, affordable, and AI-powered application solutions to address people&apos;s everyday problems.'}
+                : "At the age of 64, he began exploring and understanding the transformative potential of Artificial Intelligence. By the age of 66, he started developing practical, affordable, and AI-powered application solutions to address people's everyday problems."}
             </p>
             <div className="founder-belief">
               <SearchCheck size={22} aria-hidden="true" />
               <span>
                 {isHindi
                   ? 'Company के innovations केवल technology से driven नहीं हैं. वे decades of real-world experience, communities के साथ close interaction, careful research and analysis, और masses के लिए simple, inclusive और affordable digital solutions बनाने की genuine commitment से आते हैं.'
-                  : 'The company&apos;s innovations are not driven by technology alone. They originate from decades of real-world experience, close interaction with communities, careful research and analysis, and a genuine commitment to developing simple, inclusive, and affordable digital solutions for the masses.'}
+                  : "The company's innovations are not driven by technology alone. They originate from decades of real-world experience, close interaction with communities, careful research and analysis, and a genuine commitment to developing simple, inclusive, and affordable digital solutions for the masses."}
               </span>
             </div>
             <a className="phone-link" href="tel:+918178113449">
@@ -1117,7 +1150,7 @@ export default function Home() {
       <section className="section partnerships" id="partnerships">
         <div className="section-head">
           <p className="eyebrow">{isHindi ? 'Partnerships' : 'Partnerships'}</p>
-          <h2>{isHindi ? 'आइए meaningful problems को साथ मिलकर solve करें.' : 'Let&apos;s Solve Meaningful Problems Together.'}</h2>
+          <h2>{isHindi ? 'आइए meaningful problems को साथ मिलकर solve करें.' : "Let's Solve Meaningful Problems Together."}</h2>
           <p>
             {isHindi
               ? 'Rashi Bhartiya Innovation LLP public-sector teams, schools, NGOs, research partners, investors, vendors और local ecosystem collaborators के साथ conversations का स्वागत करता है.'
@@ -1329,10 +1362,19 @@ function ProductDetailPage({
         <div>
           <p className="eyebrow">{product.category}</p>
           <h1>{product.name}</h1>
+          {product.name === 'EaseTalk' ? (
+            <p className="product-supporting-headline">
+              {isHindi ? 'रोज़मर्रा के संवाद को अधिक accessible बनाना' : 'Making Everyday Communication More Accessible'}
+            </p>
+          ) : null}
           <p className="lead">{product.intro}</p>
           <div className="actions">
             <a className="button primary" href={product.url} target="_blank" rel="noopener noreferrer">
-              {product.name === 'MyLekhpal'
+              {product.name === 'EaseTalk'
+                ? isHindi
+                  ? 'EaseTalk खोलें'
+                  : 'Open EaseTalk'
+                : product.name === 'MyLekhpal'
                 ? isHindi
                   ? 'MyLekhpal देखें'
                   : 'Visit MyLekhpal'
@@ -1370,6 +1412,40 @@ function ProductDetailPage({
           </strong>
         </div>
       </section>
+
+      {product.name === 'EaseTalk' ? (
+        <section className="product-feature-grid" aria-labelledby="key-features-title">
+          <div className="product-section-heading">
+            <p className="eyebrow">{isHindi ? 'मुख्य सुविधाएँ' : 'Key Features'}</p>
+            <h2 id="key-features-title">
+              {isHindi ? 'रोज़मर्रा के संवाद को अधिक accessible बनाना' : 'Making Everyday Communication More Accessible'}
+            </h2>
+          </div>
+          <div className="product-feature-items">
+            {easeTalkKeyFeatures.map(({ title, text, Icon: FeatureIcon }) => (
+              <article key={title}>
+                <FeatureIcon size={24} aria-hidden="true" />
+                <h3>{isHindi ? ({
+                  'Speech to Text': 'Speech to Text',
+                  'Text to Voice': 'Text to Voice',
+                  'Live Captions': 'Live Captions',
+                  'Quick Phrases': 'Quick Phrases',
+                  'Multilingual Communication': 'बहुभाषी संवाद',
+                  'Name Alert - Android': 'Name Alert - Android',
+                } as Record<string, string>)[title] : title}</h3>
+                <p>{isHindi ? ({
+                  'Speech to Text': 'बोले गए शब्द readable text में बदलते हैं, ताकि users संवाद को visually follow कर सकें।',
+                  'Text to Voice': 'Typed messages या selected phrases को आवाज़ में बदला जा सकता है।',
+                  'Live Captions': 'Spoken conversations readable captions के रूप में दिखाई दे सकती हैं।',
+                  'Quick Phrases': 'Frequently used messages को save करके जल्दी access किया जा सकता है।',
+                  'Multilingual Communication': 'अधिक accessible communication के लिए English, हिन्दी और ಕನ್ನಡ support।',
+                  'Name Alert - Android': 'Configured name या nickname supported Android devices पर vibration और visible alert trigger कर सकता है। Availability device permissions और Android configuration पर निर्भर करती है।',
+                } as Record<string, string>)[title] : text}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       <section className="product-story-grid" id="features">
         {product.sections.map(([title, text]) => (
@@ -1415,7 +1491,11 @@ function ProductDetailPage({
         </p>
         <div className="actions">
           <a className="button primary" href={product.url} target="_blank" rel="noopener noreferrer">
-            {product.name === 'MyLekhpal'
+            {product.name === 'EaseTalk'
+              ? isHindi
+                ? 'EaseTalk खोलें'
+                : 'Open EaseTalk'
+              : product.name === 'MyLekhpal'
               ? isHindi
                 ? 'MyLekhpal देखें'
                 : 'Visit MyLekhpal'
